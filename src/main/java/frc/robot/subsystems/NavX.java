@@ -12,6 +12,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SPI;
 //import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 
 public class NavX extends SubsystemBase {
   /**
@@ -72,6 +73,10 @@ public class NavX extends SubsystemBase {
 
   }
 
+  public Rotation2d getRotation2d()
+  {
+    return ahrs.getRotation2d();
+  }
   public void resetYaw() {
 
     ahrs.reset();
