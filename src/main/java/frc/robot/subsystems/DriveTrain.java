@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -41,7 +41,7 @@ public class DriveTrain extends SubsystemBase {
 
   Joystick l = new Joystick(0);
   Joystick r = new Joystick(1);
-  float compassHeading = Robot.navX.getRoll();
+  float compassHeading = -(Robot.navX.getRoll());
   DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(compassHeading));
 
   public DriveTrain() {
@@ -77,12 +77,13 @@ public class DriveTrain extends SubsystemBase {
     //System.out.println("Pose: " + dDriveOdometry.getPoseMeters());
     dDriveOdometry.update(Rotation2d.fromDegrees(compassHeading), leftDrive1.getEncoder().getPosition(),
         rightDrive1.getEncoder().getPosition());
-    dDrive.setSafetyEnabled(false);
-    //setDefaultCommand(Robot.driveNormal);
+    SmartDashboard.putString("Pose", dDriveOdometry.getPoseMeters().toString());
+    SmartDashboard.putNumber("Angle", compassHeading);
 
   }
 
   public void resetPose() {
+    resetEncoderPosition();
     dDriveOdometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(0));
   }
 
