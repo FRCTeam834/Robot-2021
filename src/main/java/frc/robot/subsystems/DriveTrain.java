@@ -13,13 +13,20 @@ import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
@@ -41,14 +48,14 @@ public class DriveTrain extends SubsystemBase {
 
   Joystick l = new Joystick(0);
   Joystick r = new Joystick(1);
-  float compassHeading = -(Robot.navX.getRoll());
-  DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(compassHeading));
+  Rotation2d robotAngle = Robot.navX.getRotation2d();
+  DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(robotAngle);
 
   public DriveTrain() {
 
     leftDriveGroup.setInverted(Constants.LEFT_DRIVE_INVERTED);
     rightDriveGroup.setInverted(Constants.RIGHT_DRIVE_INVERTED);
-    
+
     resetEncoderPosition();
 
   }
@@ -73,18 +80,17 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //System.out.println("Turnt: " + Rotation2d.fromDegrees(Robot.navX.getYaw()));
-    //System.out.println("Pose: " + dDriveOdometry.getPoseMeters());
-    dDriveOdometry.update(Rotation2d.fromDegrees(compassHeading), leftDrive1.getEncoder().getPosition(),
-        rightDrive1.getEncoder().getPosition());
+    // System.out.println("Turnt: " + Rotation2d.fromDegrees(Robot.navX.getYaw()));
+    // System.out.println("Pose: " + dDriveOdometry.getPoseMeters());
+    dDriveOdometry.update(robotAngle, leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
     SmartDashboard.putString("Pose", dDriveOdometry.getPoseMeters().toString());
-    SmartDashboard.putNumber("Angle", compassHeading);
+    SmartDashboard.putString("Angle", robotAngle.toString());
 
   }
 
-  public void resetPose() {
+  public void resetOdometry(Pose2d pose2d) {
     resetEncoderPosition();
-    dDriveOdometry.resetPosition(new Pose2d(), Rotation2d.fromDegrees(0));
+    dDriveOdometry.resetPosition(pose2d, Robot.navX.getRotation2d());
   }
 
   public void leftDrive(double speed) {
@@ -137,7 +143,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void setDriveWithMultiplier(double multiplier) {
 
-    if(Robot.driveInverted == false) {
+    if (Robot.driveInverted == false) {
       setDrive(l.getY() * multiplier, r.getY() * multiplier);
     } else {
       setDrive((-r.getY() * multiplier), (-l.getY() * multiplier));
@@ -179,4 +185,22 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
+  public Command commandForTrajectory(Trajectory trajectory, Boolean initPose) {
+    resetEncoderPosition();
+    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, Robot.driveTrain::getPose,
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
+            Constants.kaVoltSecondsSquaredPerMeter),
+        Constants.kDriveKinematics, Robot.driveTrain::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
+        new PIDController(Constants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        Robot.driveTrain::tankDriveVolts, Robot.driveTrain);
+    // Run path following command, then stop at the end.
+    if (initPose) {
+      var reset = new InstantCommand(() -> Robot.driveTrain.resetOdometry(trajectory.getInitialPose()));
+      return reset.andThen(ramseteCommand.andThen(() -> Robot.driveTrain.tankDriveVolts(0, 0)));
+    } else {
+      return ramseteCommand.andThen(() -> this.tankDriveVolts(0, 0));
+    }
+  }
 }
