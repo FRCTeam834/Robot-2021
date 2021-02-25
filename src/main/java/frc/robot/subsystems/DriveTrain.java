@@ -18,7 +18,6 @@ import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -46,10 +45,9 @@ public class DriveTrain extends SubsystemBase {
 
   DifferentialDrive dDrive = new DifferentialDrive(leftDriveGroup, rightDriveGroup);
 
-  Joystick l = new Joystick(0);
-  Joystick r = new Joystick(1);
-  Rotation2d robotAngle = RobotContainer.navX.getRotation2d();
-  DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(robotAngle);
+  Joystick leftJoystick = new Joystick(0);
+  Joystick rightJoystick = new Joystick(1);
+  DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(RobotContainer.navX.getRotation2d());
 
   public DriveTrain() {
 
@@ -82,9 +80,9 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
     // System.out.println("Turnt: " + Rotation2d.fromDegrees(RobotContainer.navX.getYaw()));
     // System.out.println("Pose: " + dDriveOdometry.getPoseMeters());
-    dDriveOdometry.update(robotAngle, leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
-    SmartDashboard.putString("Pose", dDriveOdometry.getPoseMeters().toString());
-    SmartDashboard.putString("Angle", RobotContainer.navX.getRotation2d().toString());
+    dDriveOdometry.update(RobotContainer.navX.getRotation2d(), leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
+    SmartDashboard.putString("Pose: ", dDriveOdometry.getPoseMeters().toString());
+    SmartDashboard.putString("Angle: ", RobotContainer.navX.getRotation2d().toString());
 
   }
 
@@ -144,9 +142,9 @@ public class DriveTrain extends SubsystemBase {
   public void setDriveWithMultiplier(double multiplier) {
 
     if (Robot.driveInverted == false) {
-      setDrive(l.getY() * multiplier, r.getY() * multiplier);
+      setDrive(leftJoystick.getY() * multiplier, rightJoystick.getY() * multiplier);
     } else {
-      setDrive((-r.getY() * multiplier), (-l.getY() * multiplier));
+      setDrive((-rightJoystick.getY() * multiplier), (-leftJoystick.getY() * multiplier));
     }
 
   }
@@ -165,13 +163,13 @@ public class DriveTrain extends SubsystemBase {
 
   public Joystick getJoystickL() {
 
-    return l;
+    return leftJoystick;
 
   }
 
   public Joystick getJoystickR() {
 
-    return r;
+    return rightJoystick;
 
   }
 
@@ -185,16 +183,39 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
+  // Command for moving to a trajectory
   public Command commandForTrajectory(Trajectory trajectory, Boolean initPose) {
+
+    // Reset the encoders, making them at zero so the Ramsete will be accurate
     resetEncoderPosition();
-    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, RobotContainer.driveTrain::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-        Constants.kDriveKinematics, RobotContainer.driveTrain::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        RobotContainer.driveTrain::tankDriveVolts, RobotContainer.driveTrain);
+
+    // Create a new Ramsete command
+    RamseteCommand ramseteCommand = new RamseteCommand(
+
+      // The desired trajectory
+      trajectory,
+
+      // Function for getting the pose of the robot
+      RobotContainer.driveTrain::getPose,
+
+      // A Ramsete controller
+      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+
+      // Motor feedforwards to control wheel speeds
+      new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter),
+
+      // The kinematics and wheel speed objects
+      Constants.kDriveKinematics, RobotContainer.driveTrain::getWheelSpeeds,
+
+      // Left side PID controller
+      new PIDController(Constants.kPDriveVel, 0, 0),
+
+      // Right side PID controller
+      new PIDController(Constants.kPDriveVel, 0, 0),
+
+      // RamseteCommand passes volts to the callback
+      RobotContainer.driveTrain::tankDriveVolts, RobotContainer.driveTrain);
+
     // Run path following command, then stop at the end.
     if (initPose) {
       var reset = new InstantCommand(() -> RobotContainer.driveTrain.resetOdometry(trajectory.getInitialPose()));

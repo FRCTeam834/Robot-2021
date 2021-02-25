@@ -110,8 +110,7 @@ public final class Constants {
     public static final double kaVoltSecondsSquaredPerMeter = .571;
     public static final double kPDriveVel = 1.82;
     public static final double kTrackwidthMeters = .64557;
-    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-            kTrackwidthMeters);
+    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackwidthMeters);
     public static final double kMaxSpeedMetersPerSecond = Units.feetToMeters(1);
     public static final double kMaxAccelerationMetersPerSecondSquared = Units.feetToMeters(21);
     public static final double kRamseteB = 2;
