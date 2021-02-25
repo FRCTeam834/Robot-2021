@@ -96,6 +96,7 @@ public class RobotContainer {
   private final SnapTo180 snapTo180 = new SnapTo180();
   private final DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
   private final TestAuto testAuto = new TestAuto(driveTrain);
+  private final Slalom slalom = new Slalom(driveTrain);
 
   private final Joystick leftJoystick = new Joystick(0);
   private final Joystick rightJoystick = new Joystick(1);
@@ -141,6 +142,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    autonChooser.addOption("Slalom", slalom);
     autonChooser.addOption("Test Path", testAuto);
     SmartDashboard.putData("Auto Chooser", autonChooser);
   }
