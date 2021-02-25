@@ -8,7 +8,7 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class ToggleVision extends CommandBase {
   /**
@@ -18,20 +18,20 @@ public class ToggleVision extends CommandBase {
 
   public ToggleVision() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.EVSNetworkTables);
+    addRequirements(RobotContainer.EVSNetworkTables);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (Robot.EVSNetworkTables.getVisionTable().getEntry("run_vision_processing").getBoolean(false) == true) {
+    if (RobotContainer.EVSNetworkTables.getVisionTable().getEntry("run_vision_processing").getBoolean(false) == true) {
       togVisFlag = false;
     }
-    if (Robot.EVSNetworkTables.getVisionTable().getEntry("run_vision_processing").getBoolean(false) == false) {
+    if (RobotContainer.EVSNetworkTables.getVisionTable().getEntry("run_vision_processing").getBoolean(false) == false) {
       togVisFlag = true;
     }
 
-    Robot.EVSNetworkTables.getVisionTable().getEntry("run_vision_processing").setBoolean(togVisFlag);
+    RobotContainer.EVSNetworkTables.getVisionTable().getEntry("run_vision_processing").setBoolean(togVisFlag);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

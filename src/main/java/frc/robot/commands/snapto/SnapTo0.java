@@ -5,50 +5,61 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.autonomous;
+package frc.robot.commands.snapto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Shooter;
 
-public class EmptyShooterNoVision extends CommandBase {
+public class SnapTo0 extends CommandBase {
   /**
-   * Creates a new EmptyShooterNoVision.
+   * Creates a new SnapTo0.
    */
-  double time, timeStart;
   boolean finished;
-  public EmptyShooterNoVision() {
+  double lMotor, rMotor;
+  public SnapTo0() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooter, RobotContainer.conveyor);
-
+    addRequirements(RobotContainer.driveTrain);  
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time = 2;
-    timeStart = System.currentTimeMillis();
     finished = false;
-    RobotContainer.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
-    RobotContainer.conveyor.start(Constants.AUTON_CONVEYOR_SPEED);
+    lMotor = -1; 
+    rMotor = 1;
+    RobotContainer.driveTrain.setDrive(-0.5, 0.5);
+
+    /*
+    //start turning robot in correct direction
+    if (RobotContainer.navX.getYaw() < 0) { //if robot to left of 0, turn right
+      RobotContainer.driveTrain.setDrive(-0.25, 0.25);
+      lMotor = 1;
+      rMotor = -1;
+    } else if (RobotContainer.navX.getYaw() >= 0) { //if robot to right of 0, turn left
+      RobotContainer.driveTrain.setDrive(0.5, -0.5);
+      lMotor = -1;
+      rMotor = 1;
+    } 
+    */
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(((System.currentTimeMillis()-timeStart)/1000) > time) {
-      finished = true;
-    }
+    if(Math.abs(RobotContainer.navX.getYaw()) <= 15) { // spin slower once close for percision
+      RobotContainer.driveTrain.setDrive(lMotor*.25, rMotor*.25);
+      if(Math.abs(RobotContainer.navX.getYaw()) <= 5) {
+        //now the that we are facing 0, we can gg ez stop spinning
+        finished = true;
+      }
+     } 
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.stop();
-    RobotContainer.conveyor.stop();
+    RobotContainer.driveTrain.setDrive(0,0);
   }
 
   // Returns true when the command should end.

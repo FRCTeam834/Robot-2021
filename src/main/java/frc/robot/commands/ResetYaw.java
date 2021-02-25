@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class ResetYaw extends CommandBase {
   /**
@@ -18,7 +19,7 @@ public class ResetYaw extends CommandBase {
   double lMotor, rMotor; //multiply by speed to set direction of motor
   public ResetYaw() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.navX);
+    addRequirements(RobotContainer.navX);
   }
 
   // Called when the command is initially scheduled.
@@ -29,27 +30,27 @@ public class ResetYaw extends CommandBase {
     finished = false;
     lMotor = 1; 
     rMotor =1;
-    if(Math.abs(Math.abs(Robot.navX.getYaw())-180) < Math.abs(Robot.navX.getYaw())) {
+    if(Math.abs(Math.abs(RobotContainer.navX.getYaw())-180) < Math.abs(RobotContainer.navX.getYaw())) {
       Robot.yawBackwards = true; 
     }
 
     //turn robot to face 0 or 180(if inverted)
-    /*if(!Robot.yawBackwards && Robot.navX.getYaw() < 0){ //if robot to left of 0, turn right
-      Robot.driveTrain.setDrive(0.5, -0.5);
+    /*if(!RobotContainer.yawBackwards && RobotContainer.navX.getYaw() < 0){ //if robot to left of 0, turn right
+      RobotContainer.driveTrain.setDrive(0.5, -0.5);
       lMotor = 1;
       rMotor = -1;
-    } else if (!Robot.yawBackwards && Robot.navX.getYaw() > 0) { //if robot to right of 0, turn left
-      Robot.driveTrain.setDrive(-0.5, 0.5);
+    } else if (!RobotContainer.yawBackwards && RobotContainer.navX.getYaw() > 0) { //if robot to right of 0, turn left
+      RobotContainer.driveTrain.setDrive(-0.5, 0.5);
       lMotor = -1;
       rMotor = 1;
     } */
     //turn robot to face 180. doesn't need to be turned to 0 if it is not inverted because duh
-    if (Robot.yawBackwards && Robot.navX.getYaw() < 0) { //if robot to right of 180, turn left
-      Robot.driveTrain.setDrive(0.5, -0.5);
+    if (Robot.yawBackwards && RobotContainer.navX.getYaw() < 0) { //if robot to right of 180, turn left
+      RobotContainer.driveTrain.setDrive(0.5, -0.5);
       lMotor = -1;
       rMotor = 1;
-    } else if (Robot.yawBackwards && Robot.navX.getYaw() > 0) { //if robot to left of 180, turn right
-      Robot.driveTrain.setDrive(-0.5, 0.5);
+    } else if (Robot.yawBackwards && RobotContainer.navX.getYaw() > 0) { //if robot to left of 180, turn right
+      RobotContainer.driveTrain.setDrive(-0.5, 0.5);
       lMotor = 1;
       rMotor = -1;
     } else if (!Robot.yawBackwards) {
@@ -62,21 +63,21 @@ public class ResetYaw extends CommandBase {
   public void execute() {
     //turning to 180 (if inverted)
     if (Robot.yawBackwards) {
-      if(Math.abs(Robot.navX.getYaw()) >= 165) {
-       Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
-       if(Math.abs(Robot.navX.getYaw()) >= 175) {
+      if(Math.abs(RobotContainer.navX.getYaw()) >= 165) {
+       RobotContainer.driveTrain.setDrive(lMotor*.25, rMotor*.25);
+       if(Math.abs(RobotContainer.navX.getYaw()) >= 175) {
          //now the that we are facing 180, we can reset yaw so it is no longer backwards!
-         Robot.navX.resetYaw(); 
+         RobotContainer.navX.resetYaw(); 
          Robot.yawBackwards = false;
          finished = true;
        }
       } 
     } 
     /*//turning to 0 (not inverted)
-    if (!Robot.yawBackwards) {
-      if(Math.abs(Robot.navX.getYaw()) <= 10) {
-       Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
-       if(Math.abs(Robot.navX.getYaw()) <= 3) {
+    if (!RobotContainer.yawBackwards) {
+      if(Math.abs(RobotContainer.navX.getYaw()) <= 10) {
+       RobotContainer.driveTrain.setDrive(lMotor*.25, rMotor*.25);
+       if(Math.abs(RobotContainer.navX.getYaw()) <= 3) {
          finished = true;
        }
       } 
@@ -87,7 +88,7 @@ public class ResetYaw extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.driveTrain.setDrive(0, 0);
+    RobotContainer.driveTrain.setDrive(0, 0);
   }
 
   // Returns true when the command should end.

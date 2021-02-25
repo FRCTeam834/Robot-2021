@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
-import frc.robot.commands.StopShooter;
+import frc.robot.commands.shooter.StopShooter;
 
 public class Shooter extends SubsystemBase {
   /**

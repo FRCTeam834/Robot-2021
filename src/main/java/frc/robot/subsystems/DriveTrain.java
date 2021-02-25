@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import frc.robot.Constants;
 import frc.robot.Robot;
-
+import frc.robot.RobotContainer;
 public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
@@ -48,15 +48,15 @@ public class DriveTrain extends SubsystemBase {
 
   Joystick l = new Joystick(0);
   Joystick r = new Joystick(1);
-  Rotation2d robotAngle = Robot.navX.getRotation2d();
+  Rotation2d robotAngle = RobotContainer.navX.getRotation2d();
   DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(robotAngle);
 
   public DriveTrain() {
 
     leftDriveGroup.setInverted(Constants.LEFT_DRIVE_INVERTED);
     rightDriveGroup.setInverted(Constants.RIGHT_DRIVE_INVERTED);
-
-    resetEncoderPosition();
+    resetOdometry(new Pose2d());
+    
 
   }
 
@@ -80,17 +80,17 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    // System.out.println("Turnt: " + Rotation2d.fromDegrees(Robot.navX.getYaw()));
+    // System.out.println("Turnt: " + Rotation2d.fromDegrees(RobotContainer.navX.getYaw()));
     // System.out.println("Pose: " + dDriveOdometry.getPoseMeters());
     dDriveOdometry.update(robotAngle, leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
     SmartDashboard.putString("Pose", dDriveOdometry.getPoseMeters().toString());
-    SmartDashboard.putString("Angle", robotAngle.toString());
+    SmartDashboard.putString("Angle", RobotContainer.navX.getRotation2d().toString());
 
   }
 
   public void resetOdometry(Pose2d pose2d) {
     resetEncoderPosition();
-    dDriveOdometry.resetPosition(pose2d, Robot.navX.getRotation2d());
+    dDriveOdometry.resetPosition(pose2d, RobotContainer.navX.getRotation2d());
   }
 
   public void leftDrive(double speed) {
@@ -187,18 +187,18 @@ public class DriveTrain extends SubsystemBase {
 
   public Command commandForTrajectory(Trajectory trajectory, Boolean initPose) {
     resetEncoderPosition();
-    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, Robot.driveTrain::getPose,
+    RamseteCommand ramseteCommand = new RamseteCommand(trajectory, RobotContainer.driveTrain::getPose,
         new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
         new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
             Constants.kaVoltSecondsSquaredPerMeter),
-        Constants.kDriveKinematics, Robot.driveTrain::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
+        Constants.kDriveKinematics, RobotContainer.driveTrain::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
         new PIDController(Constants.kPDriveVel, 0, 0),
         // RamseteCommand passes volts to the callback
-        Robot.driveTrain::tankDriveVolts, Robot.driveTrain);
+        RobotContainer.driveTrain::tankDriveVolts, RobotContainer.driveTrain);
     // Run path following command, then stop at the end.
     if (initPose) {
-      var reset = new InstantCommand(() -> Robot.driveTrain.resetOdometry(trajectory.getInitialPose()));
-      return reset.andThen(ramseteCommand.andThen(() -> Robot.driveTrain.tankDriveVolts(0, 0)));
+      var reset = new InstantCommand(() -> RobotContainer.driveTrain.resetOdometry(trajectory.getInitialPose()));
+      return reset.andThen(ramseteCommand.andThen(() -> RobotContainer.driveTrain.tankDriveVolts(0, 0)));
     } else {
       return ramseteCommand.andThen(() -> this.tankDriveVolts(0, 0));
     }

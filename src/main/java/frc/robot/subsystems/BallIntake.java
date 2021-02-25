@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
-import frc.robot.commands.StopIntake;
+import frc.robot.commands.intake.StopIntake;
 
 public class BallIntake extends SubsystemBase {
   /**

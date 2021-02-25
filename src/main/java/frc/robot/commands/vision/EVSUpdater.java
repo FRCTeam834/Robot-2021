@@ -8,20 +8,20 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class EVSUpdater extends CommandBase {
 
   public EVSUpdater() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.EVSNetworkTables);
-    addRequirements(Robot.driveTrain);
+    addRequirements(RobotContainer.EVSNetworkTables);
+    addRequirements(RobotContainer.driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.EVSNetworkTables.getVisionTable();
+    RobotContainer.EVSNetworkTables.getVisionTable();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -30,21 +30,21 @@ public class EVSUpdater extends CommandBase {
 
     //We just wanna run the vision, you know
     try {
-      if (Robot.EVSNetworkTables.getGoalArray().get(0).get(1) > 360) {
+      if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).get(1) > 360) {
 
-        Robot.driveTrain.setDrive(-.08, .08);
+        RobotContainer.driveTrain.setDrive(-.08, .08);
         System.out.println("turn left");
 
-      } else if (Robot.EVSNetworkTables.getGoalArray().get(0).get(1) < 290) {
+      } else if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).get(1) < 290) {
 
         System.out.println("turn right");
-        Robot.driveTrain.setDrive(.08, -.08);
+        RobotContainer.driveTrain.setDrive(.08, -.08);
 
       }
 
       else {
 
-        Robot.driveTrain.stop();
+        RobotContainer.driveTrain.stop();
       }
     } catch (Exception e) {
 
@@ -57,13 +57,13 @@ public class EVSUpdater extends CommandBase {
   public void end(boolean interrupted) {
 
     //returns the amount of balls that are currently in the shot, and the values inside the first array.
-    //System.out.println("Vision ArrayList Size: " + Robot.EVSNetworkTables.getArray().size());
+    //System.out.println("Vision ArrayList Size: " + RobotContainer.EVSNetworkTables.getArray().size());
     /*try {
     
-      System.out.println("Values in the Array: " + Robot.EVSNetworkTables.getArray().get(1).get(0) + ", "
-          + Robot.EVSNetworkTables.getArray().get(1).get(1) + ", " + Robot.EVSNetworkTables.getArray().get(1).get(2)
-          + ", " + Robot.EVSNetworkTables.getArray().get(1).get(3) + ", "
-          + Robot.EVSNetworkTables.getArray().get(1).get(4));
+      System.out.println("Values in the Array: " + RobotContainer.EVSNetworkTables.getArray().get(1).get(0) + ", "
+          + RobotContainer.EVSNetworkTables.getArray().get(1).get(1) + ", " + RobotContainer.EVSNetworkTables.getArray().get(1).get(2)
+          + ", " + RobotContainer.EVSNetworkTables.getArray().get(1).get(3) + ", "
+          + RobotContainer.EVSNetworkTables.getArray().get(1).get(4));
     
     } catch (Exception e) {
     
@@ -71,8 +71,8 @@ public class EVSUpdater extends CommandBase {
     }*/
 
     System.out.println("");
-    System.out.println(Robot.EVSNetworkTables.getPowerCellArray());
-    System.out.println(Robot.EVSNetworkTables.getGoalArray());
+    System.out.println(RobotContainer.EVSNetworkTables.getPowerCellArray());
+    System.out.println(RobotContainer.EVSNetworkTables.getGoalArray());
     System.out.println("");
 
   }

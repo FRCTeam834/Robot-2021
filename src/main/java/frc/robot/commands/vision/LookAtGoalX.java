@@ -9,7 +9,7 @@ package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.createdclasses.Goal;
 
 public class LookAtGoalX extends CommandBase {
@@ -21,8 +21,8 @@ public class LookAtGoalX extends CommandBase {
 
   public LookAtGoalX() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.EVSNetworkTables);
-    addRequirements(Robot.driveTrain);
+    addRequirements(RobotContainer.EVSNetworkTables);
+    addRequirements(RobotContainer.driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -33,9 +33,9 @@ public class LookAtGoalX extends CommandBase {
 
     try {
 
-      if (Robot.EVSNetworkTables.getGoalArray().get(0).size() != 0) {
+      if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).size() != 0) {
 
-        goal = new Goal(Robot.EVSNetworkTables.getGoalArray().get(0));
+        goal = new Goal(RobotContainer.EVSNetworkTables.getGoalArray().get(0));
 
       } else {
 
@@ -54,7 +54,7 @@ public class LookAtGoalX extends CommandBase {
   @Override
   public void execute() {
 
-    goal.update(Robot.EVSNetworkTables.getGoalArray().get(0));
+    goal.update(RobotContainer.EVSNetworkTables.getGoalArray().get(0));
 
     double deviation = goal.getCenterX() - 320;
 
@@ -62,11 +62,11 @@ public class LookAtGoalX extends CommandBase {
 
     } else if (deviation < -1 * Constants.TOLERANCE) {
 
-      Robot.driveTrain.setDrive(-deviation * Constants.SPEED_INDEX, deviation * Constants.SPEED_INDEX);
+      RobotContainer.driveTrain.setDrive(-deviation * Constants.SPEED_INDEX, deviation * Constants.SPEED_INDEX);
 
     } else if (deviation > Constants.TOLERANCE) {
 
-      Robot.driveTrain.setDrive(deviation * Constants.SPEED_INDEX, -deviation * Constants.SPEED_INDEX);
+      RobotContainer.driveTrain.setDrive(deviation * Constants.SPEED_INDEX, -deviation * Constants.SPEED_INDEX);
 
     }
 

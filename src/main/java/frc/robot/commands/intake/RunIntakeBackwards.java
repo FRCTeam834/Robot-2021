@@ -5,60 +5,39 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.autonomous;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+
 import frc.robot.RobotContainer;
 
-public class AutonConveyor extends CommandBase {
+public class RunIntakeBackwards extends CommandBase {
   /**
-   * Creates a new AutonConveyor.
+   * Creates a new RunIntake.
    */
-  double time, speed, timeStart, currentTime, timeElapsed;
-  boolean isFinished;
-  public AutonConveyor() {
+  public RunIntakeBackwards() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.conveyor);
+    addRequirements(RobotContainer.ballIntake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time = 3;
-    speed = .75;
-    timeStart = System.currentTimeMillis();
-    isFinished = false;
-  }
 
-  public void initialize(double t, double s) {
-    time = t;
-    speed = s;
-    RobotContainer.conveyor.start(speed);
-    timeStart = System.currentTimeMillis();
-    isFinished = false;
-    
+    RobotContainer.ballIntake.start(-.5);
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentTime = System.currentTimeMillis();
-    timeElapsed = currentTime - timeStart;
-    
-    if (timeElapsed < time) {
-      isFinished = false;
-    }
-    else {
-      isFinished = true;
-    }
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    isFinished = false;
-    RobotContainer.conveyor.stop();
+    RobotContainer.ballIntake.stop();
   }
 
   // Returns true when the command should end.

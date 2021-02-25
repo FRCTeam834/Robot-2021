@@ -9,33 +9,38 @@
 package frc.robot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 import frc.robot.commands.*;
+import frc.robot.commands.autonomous.autons.*;
 import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.autonomous.EmptyShooterNoVision;
 import frc.robot.commands.autonomous.ShooterToSpeed;
-import frc.robot.commands.autonomous.autons.CenterAutonBackward;
-import frc.robot.commands.autonomous.autons.CenterAutonForward;
-import frc.robot.commands.autonomous.autons.ShootCollectShootAuto;
+import frc.robot.commands.autonomous.autons.TestAuto;
+import frc.robot.commands.Conveyor.*;
+import frc.robot.commands.intake.*;
+import frc.robot.commands.drive.*;
+import frc.robot.commands.shooter.*;
+import frc.robot.commands.hood.*;
+import frc.robot.commands.snapto.*;
 import frc.robot.commands.vision.ToggleVision;
+import frc.robot.subsystems.BallIntake;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.GimbalLock;
+import frc.robot.subsystems.NavX;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.EVSNetworkTables;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -49,12 +54,22 @@ public class RobotContainer {
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   // private final ExampleCommand m_autoCommand = new
   // ExampleCommand(m_exampleSubsystem);
-
-  //private final DriveTrain driveTrai DriveTrain();
+  //Subsystems
+  public static DriveTrain driveTrain;
+  public static BallIntake ballIntake;
+  //public static ControlPanelManip controlPanelManip;
+  public static Shooter shooter;
+  public static String gameData;
+  public static Conveyor conveyor;
+  public static EVSNetworkTables EVSNetworkTables;
+  public UsbCamera camera;
+  public static GimbalLock gimbalLock;
+  public static NavX navX;
+  //Commands
   private final DriveNormal driveNormal = new DriveNormal();
   private final DriveSlowSpeed driveSlowSpeed = new DriveSlowSpeed();
   private final DriveMaxSpeed driveMaxSpeed = new DriveMaxSpeed();
-  private final DriveInverted driveInverted = new DriveInverted();
+  public final DriveInverted driveInverted = new DriveInverted();
 
   private final RunIntake runIntake = new RunIntake();
   private final RunIntakeBackwards runIntakeBackwards = new RunIntakeBackwards();
@@ -72,29 +87,22 @@ public class RobotContainer {
   private final StopConveyor stopConveyor = new StopConveyor();
 
   private final ToggleVision toggleVision = new ToggleVision();
-  private final ResetBallCount resetBallCount = new ResetBallCount();
   private final AimAndShoot aimAndShoot = new AimAndShoot();
   private final ShooterToSpeed shooterToSpeed = new ShooterToSpeed();
-  private final RunClimberUp runClimberUp = new RunClimberUp();
-  private final RunClimberDown runClimberDown = new RunClimberDown();
-  //private final SpinCP spinCP = new SpinCP();
-  //private final SetCPColor setCPColor = new SetCPColor();
-  private final CenterAutonBackward centerAutonBackward = new CenterAutonBackward();
-  private final DriveBackwardsDistance driveBackwardsDistance = new DriveBackwardsDistance(12); 
+  private final DriveBackwardsDistance driveBackwardsDistance = new DriveBackwardsDistance(12);
   private final EmptyShooterNoVision emptyShooterNoVision = new EmptyShooterNoVision();
   private final ResetYaw resetYaw = new ResetYaw();
   private final SnapTo0 snapTo0 = new SnapTo0();
   private final SnapTo180 snapTo180 = new SnapTo180();
   private final DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
-  private final CenterAutonForward centerAutonForward = new CenterAutonForward();
-  private final ShootCollectShootAuto shootCollectShootAuto = new ShootCollectShootAuto();
+  private final TestAuto testAuto = new TestAuto(driveTrain);
 
   private final Joystick leftJoystick = new Joystick(0);
   private final Joystick rightJoystick = new Joystick(1);
   private final XboxController xbox = new XboxController(2);
   private final Joystick launchpad = new Joystick(3);
-
-  //Joystick Buttons
+  private final SendableChooser<Command> autonChooser = new SendableChooser<>();
+  // Joystick Buttons
   private final JoystickButton
   // Left Joystick
   lJoystick1 = new JoystickButton(leftJoystick, 1), lJoystick2 = new JoystickButton(leftJoystick, 2),
@@ -119,15 +127,13 @@ public class RobotContainer {
       BGBL = new JoystickButton(launchpad, 10), BGBM = new JoystickButton(launchpad, 9),
       BGBR = new JoystickButton(launchpad, 8);
 
-  //Xbox Buttons
-  private final JoystickButton xboxStart = new JoystickButton(xbox, 8), xboxBack = new JoystickButton(xbox, 7),
-      xboxB = new JoystickButton(xbox, 2), xboxA = new JoystickButton(xbox, 1), xboxY = new JoystickButton(xbox, 4),
-      xboxX = new JoystickButton(xbox, 3), xboxLB = new JoystickButton(xbox, 5), xboxRB = new JoystickButton(xbox, 6),
+  // Xbox Buttons
+  private final JoystickButton xboxStart = new JoystickButton(xbox, Button.kStart.value), xboxBack = new JoystickButton(xbox, Button.kBack.value),
+      xboxB = new JoystickButton(xbox, Button.kB.value), xboxA = new JoystickButton(xbox, Button.kA.value), xboxY = new JoystickButton(xbox, Button.kY.value),
+      xboxX = new JoystickButton(xbox, Button.kX.value), xboxLB = new JoystickButton(xbox, Button.kBumperLeft.value), xboxRB = new JoystickButton(xbox, Button.kBumperRight.value),
       xboxLJB = new JoystickButton(xbox, 9);
 
-  // Triggers
-  // xbox.getBumperPressed(GenericHID.Hand.kLeft);
-  // xbox.getBumperPressed(GenericHID.Hand.kRight);
+
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -135,7 +141,10 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    autonChooser.addOption("Test Path", testAuto);
+    SmartDashboard.putData("Auto Chooser", autonChooser);
   }
+
 
   public ArrayList<Object> getCommands() {
 
@@ -160,56 +169,46 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //drive speed buttons
+    // drive speed buttons
     lJoystick1.whenPressed(driveSlowSpeed);
     rJoystick1.whenPressed(driveNormal);
     rJoystick2.whenPressed(driveMaxSpeed);
     lJoystick2.whenPressed(driveInverted);
 
-    //shooter buttons
+    // shooter buttons
     xboxA.whenPressed(aimAndShoot);
     BGTL.toggleWhenPressed(runShooter);
-    //BGTR.whileHeld(runPivotUp);
-    //BGMR.whileHeld(runPivotDown);
+    // BGTR.whileHeld(runPivotUp);
+    // BGMR.whileHeld(runPivotDown);
     BGTR.whenPressed(snapTo0);
     BGMR.whenPressed(snapTo180);
 
-    //conveyor/intake buttons
+    // conveyor/intake buttons
     xboxB.toggleWhenPressed(runConveyorSensor);
     xboxLB.whenHeld(runIntakeBackwards);
     xboxRB.whenHeld(runIntake);
     BGMM.whenHeld(runConveyor);
-    //BGMR.whenHeld(runConveyorBackward);
-    //add things for conveyor that I'm confused about
-    xboxX.whenPressed(shootCollectShootAuto);
-    xboxY.whenPressed(centerAutonBackward);
+    // BGMR.whenHeld(runConveyorBackward);
+    // add things for conveyor that I'm confused about
+ 
 
-    //climber
-    BGML.whenHeld(runClimberUp);
-    //BGML.whenPressed(resetYaw);
-    //BGBL.whenPressed(emptyShooterNoVision);
+    // climber
+  
 
-    BGBL.whenHeld(runClimberDown);
+    // BGML.whenPressed();
+    // BGMM.whenPressed();
+    // BGMR.whileHeld(runPivotUp);
 
-    //BGML.whenPressed();
-    //BGMM.whenPressed();
-    //BGMR.whileHeld(runPivotUp);
+    // BGBL.whenPressed();
+    // BGBM.whenPressed();
+    // BGBR.whileHeld(runPivotDown);
 
-    //BGBL.whenPressed();
-    //BGBM.whenPressed();
-    //BGBR.whileHeld(runPivotDown);
-    
     /*
-    //xboxStart.whileHeld();
-    //xboxBack.whileHeld();
-    //xboxB.whileHeld();
-    //xboxA.whileHeld();
-    //xboxY.whileHeld();
-    //xboxX.whileHeld();
-    xboxLB.whileHeld(runIntakeBackwards);
-    xboxRB.whileHeld(runIntake);
-    //xboxLJB.whileHeld();
-    */
+     * //xboxStart.whileHeld(); //xboxBack.whileHeld(); //xboxB.whileHeld();
+     * //xboxA.whileHeld(); //xboxY.whileHeld(); //xboxX.whileHeld();
+     * xboxLB.whileHeld(runIntakeBackwards); xboxRB.whileHeld(runIntake);
+     * //xboxLJB.whileHeld();
+     */
   }
 
   /**
@@ -218,38 +217,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   Command getAutonomousCommand() {
-
-    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(Constants.ksVolts,
-        Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter), Constants.kDriveKinematics, 10);
-
-    TrajectoryConfig config = new TrajectoryConfig(Constants.kMaxSpeedMetersPerSecond,
-        Constants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(Constants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 0)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(1, 0, new Rotation2d(0)),
-        // Pass config
-        config);
-
-    RamseteCommand ramseteCommand = new RamseteCommand(exampleTrajectory, Robot.driveTrain::getPose,
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-        new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter,
-            Constants.kaVoltSecondsSquaredPerMeter),
-        Constants.kDriveKinematics, Robot.driveTrain::getWheelSpeeds, new PIDController(Constants.kPDriveVel, 0, 0),
-        new PIDController(Constants.kPDriveVel, 0, 0),
-        // RamseteCommand passes volts to the callback
-        Robot.driveTrain::tankDriveVolts, Robot.driveTrain);
-
-    // Run path following command, then stop at the end.
-    return ramseteCommand.andThen(() -> Robot.driveTrain.tankDriveVolts(0, 0));
+    return autonChooser.getSelected();
   }
 }

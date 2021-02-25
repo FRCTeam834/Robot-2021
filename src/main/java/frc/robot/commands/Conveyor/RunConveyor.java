@@ -5,52 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.autonomous;
+package frc.robot.commands.Conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 
 import frc.robot.RobotContainer;
 
-
-public class EmptyShooter extends CommandBase {
+public class RunConveyor extends CommandBase {
   /**
-   * Creates a new EmptyShooter.
+   * Creates a new RunConveyor.
    */
-
   //ok so this variable will say if the sensor was previously covered or uncovered so we can tell when a new ball is passing in front of it.
-  boolean prevBottomSensorStatus;
-  boolean prevTopSensorStatus; //same deal as bottom sensor
+  //boolean prevBottomSensorStatus;
+ // boolean prevTopSensorStatus; //same deal as bottom sensor
 
-  private boolean isFinished = false;
-
-  public EmptyShooter() {
+  public RunConveyor() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooter, RobotContainer.conveyor);
+    addRequirements(RobotContainer.conveyor);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    prevBottomSensorStatus = RobotContainer.conveyor.getBottomSensor();
-    prevTopSensorStatus = RobotContainer.conveyor.getTopSensor();
-
-    isFinished = false;
+    RobotContainer.conveyor.start(.75);
+    //prevBottomSensorStatus = RobotContainer.Conveyor.getBottomSensor();
+    //prevTopSensorStatus = RobotContainer.Conveyor.getTopSensor();
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
-    RobotContainer.conveyor.start(Constants.AUTON_CONVEYOR_SPEED);
-    /*if (RobotContainer.ballCount == 0) {
-      isFinished = true; //may need to remove exclamation point
-    }
-
     //check if a ball is now entering while previous there was no ball
     //also checks if a ball is exiting the robot
-    if (RobotContainer.Conveyor.getBottomSensor() == true && prevBottomSensorStatus == false) {
+    /*if (RobotContainer.Conveyor.getBottomSensor() == true && prevBottomSensorStatus == false) {
       prevBottomSensorStatus = true;
       RobotContainer.ballCount++;
     } else if (RobotContainer.Conveyor.getTopSensor() == true && prevTopSensorStatus == false) {
@@ -67,14 +55,15 @@ public class EmptyShooter extends CommandBase {
 
   }
 
-  // Called once the command ends or is interrupted.
+  // Called once the ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    RobotContainer.conveyor.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isFinished;
+    return false;
   }
 }

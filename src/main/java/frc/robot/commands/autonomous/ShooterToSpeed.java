@@ -10,6 +10,7 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 public class ShooterToSpeed extends CommandBase {
   /**
@@ -19,7 +20,7 @@ public class ShooterToSpeed extends CommandBase {
 
   public ShooterToSpeed() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.shooter);
+    addRequirements(RobotContainer.shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -27,7 +28,7 @@ public class ShooterToSpeed extends CommandBase {
   public void initialize() {
 
     isFinished = false;
-    Robot.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
+    RobotContainer.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
 
   }
 
@@ -35,7 +36,7 @@ public class ShooterToSpeed extends CommandBase {
   @Override
   public void execute() {
 
-    if (Robot.shooter.getEncoder().getVelocity() >= (Constants.S_WHEEL_SPEED * 60)) {
+    if (RobotContainer.shooter.getEncoder().getVelocity() >= (Constants.S_WHEEL_SPEED * 60)) {
 
       isFinished = true;
 

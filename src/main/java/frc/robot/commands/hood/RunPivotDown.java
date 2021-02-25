@@ -5,60 +5,36 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.autonomous;
+package frc.robot.commands.hood;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.Constants;
 
-public class AutonConveyor extends CommandBase {
+public class RunPivotDown extends CommandBase {
   /**
-   * Creates a new AutonConveyor.
+   * Creates a new RunClimberUp.
    */
-  double time, speed, timeStart, currentTime, timeElapsed;
-  boolean isFinished;
-  public AutonConveyor() {
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.conveyor);
+  public RunPivotDown() {
+    addRequirements(RobotContainer.gimbalLock);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time = 3;
-    speed = .75;
-    timeStart = System.currentTimeMillis();
-    isFinished = false;
-  }
+    RobotContainer.gimbalLock.tiltDown(Constants.SHOOTER_PIVOT_SPEED);
 
-  public void initialize(double t, double s) {
-    time = t;
-    speed = s;
-    RobotContainer.conveyor.start(speed);
-    timeStart = System.currentTimeMillis();
-    isFinished = false;
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    currentTime = System.currentTimeMillis();
-    timeElapsed = currentTime - timeStart;
-    
-    if (timeElapsed < time) {
-      isFinished = false;
-    }
-    else {
-      isFinished = true;
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    isFinished = false;
-    RobotContainer.conveyor.stop();
+    RobotContainer.gimbalLock.stop();
   }
 
   // Returns true when the command should end.
