@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj.Spark;
 
 import frc.robot.commands.drive.DriveMaxSpeed;
 import frc.robot.commands.drive.DriveNormal;
@@ -54,14 +55,19 @@ public class Robot extends TimedRobot {
   public static boolean driveInverted;
   public static boolean yawBackwards;
 
+  //Lights!
+  public static double lights = -.45;
+  Spark led;
+
+
   private int cycleCount = 0;
   private boolean recordStatus = false;
   private Object[][] commandValues = new Object[3][1500];
-  private int n = 0;
+  private int n = 0; // index
   private double systemTimeStart = 0;
   private boolean running = false;
-  private int m = 0;
-  private int o = 0;
+  private int m = 0; // index
+  private int o = 0; // index
   private Object[][] commandVals = new Object[3][1500];
   private XboxController boxX = new XboxController(2);
   private Goal goal;
@@ -79,6 +85,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     RobotContainer.driveTrain.resetOdometry(new Pose2d());
     RobotContainer.navX.resetYaw();
+    led = new Spark(9); //Replace with real PWM channel
 
   }
 
@@ -160,6 +167,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
 
+    led.set(lights);
+
     if (running) {
 
       m = o;
@@ -217,6 +226,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+
+    led.set(lights);
 
     SmartDashboard.putNumber("YAW", RobotContainer.navX.getYaw());
     SmartDashboard.putNumber("Right Encoder", RobotContainer.driveTrain.getRightEncoderValue());

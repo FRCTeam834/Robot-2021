@@ -96,6 +96,10 @@ public final class Constants {
     public static final int BALL_SENSOR_PORT = 0; // DIO Port# //Bottom Sensor
     public static final int EMPTY_SENSOR_PORT = 5; // DIO Port# //Top Sensor
 
+    // Ultrasonic Constants
+    public static final int US_PING = 1; // DIO Port# // Ping(outgoing)
+    public static final int US_ECHO = 2; // DIO Port$ // Echo(incoming)
+
     public static final double AUTON_CONVEYOR_SPEED = .5;
 
     // Climber Constants
@@ -147,5 +151,16 @@ public final class Constants {
 
     // public static String[][] driverInputArray = new String{{"Christian Piper",
     // "0.25", "0.75"}, {"Standard", "0",}};
+
+     // LED Values (for style)
+     public static final double LAVA_RAINBOW = -.87;
+     public static final double STROBE_RED = -.11;
+     public static final double PARTY = -.43;
+     public static final double PINK = .57;
+     public static final double GLITTER_RAINBOW = -.89;
+     public static final double OCEAN = -.95;
+     public static final double WHITE_HB = .25;
+     public static final double BLUE_VIOLET = .89;
+     public static final double SKY_BLUE = .83;
 
 }

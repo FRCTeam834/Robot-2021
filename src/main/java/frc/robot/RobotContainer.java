@@ -11,6 +11,7 @@ package frc.robot;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.*;
 import frc.robot.commands.autonomous.autons.*;
+import frc.robot.commands.autonomous.autons.Slalom;
 import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.autonomous.EmptyShooterNoVision;
 import frc.robot.commands.autonomous.ShooterToSpeed;
@@ -41,6 +43,7 @@ import frc.robot.subsystems.GimbalLock;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.EVSNetworkTables;
+import frc.robot.subsystems.UltrasonicSensor;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -57,14 +60,16 @@ public class RobotContainer {
   //Subsystems
   public static DriveTrain driveTrain;
   public static BallIntake ballIntake;
+  public static UltrasonicSensor ultrasonicSensor = new UltrasonicSensor();
   //public static ControlPanelManip controlPanelManip;
   public static Shooter shooter;
   public static String gameData;
-  public static Conveyor conveyor;
+  public static Conveyor conveyor = new Conveyor();
   public static EVSNetworkTables EVSNetworkTables;
   public UsbCamera camera;
   public static GimbalLock gimbalLock;
   public static NavX navX;
+  
   //Commands
   private final DriveNormal driveNormal = new DriveNormal();
   private final DriveSlowSpeed driveSlowSpeed = new DriveSlowSpeed();
@@ -94,7 +99,7 @@ public class RobotContainer {
   private final ResetYaw resetYaw = new ResetYaw();
   private final SnapTo0 snapTo0 = new SnapTo0();
   private final SnapTo180 snapTo180 = new SnapTo180();
-  private final DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
+  private final  DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
   private final TestAuto testAuto = new TestAuto(driveTrain);
   private final Slalom slalom = new Slalom(driveTrain);
 
@@ -124,7 +129,8 @@ public class RobotContainer {
       // Arcade Buttons
       BGTL = new JoystickButton(launchpad, 7), BGTM = new JoystickButton(launchpad, 2),
       BGTR = new JoystickButton(launchpad, 4), BGML = new JoystickButton(launchpad, 1),
-      BGMM = new JoystickButton(launchpad, 6), BGMR = new JoystickButton(launchpad, 3),
+      BGMM = new JoystickButton(launchpad, 6), 
+      BGMR = new JoystickButton(launchpad, 3),
       BGBL = new JoystickButton(launchpad, 10), BGBM = new JoystickButton(launchpad, 9),
       BGBR = new JoystickButton(launchpad, 8);
 
@@ -173,7 +179,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // drive speed buttons
     lJoystick1.whenPressed(driveSlowSpeed);
-    rJoystick1.whenPressed(driveNormal);
+    rJoystick1.whenPressed(() -> driveTrain.setDriveWithMultiplier(.5));
     rJoystick2.whenPressed(driveMaxSpeed);
     lJoystick2.whenPressed(driveInverted);
 
@@ -187,9 +193,16 @@ public class RobotContainer {
 
     // conveyor/intake buttons
     xboxB.toggleWhenPressed(runConveyorSensor);
-    xboxLB.whenHeld(runIntakeBackwards);
-    xboxRB.whenHeld(runIntake);
-    BGMM.whenHeld(runConveyor);
+    
+    xboxLB.whenHeld(new InstantCommand(ballIntake::startBackwards, ballIntake));
+
+    //start intake
+    xboxRB.whileHeld(() -> ballIntake.start(1.0));
+    //conveyor backwards
+    BGMR.whenPressed(() -> conveyor.start(-.75));
+    
+    //stop conveyor
+    BGMM.whenPressed(new InstantCommand(conveyor::stop, conveyor));
     // BGMR.whenHeld(runConveyorBackward);
     // add things for conveyor that I'm confused about
  
