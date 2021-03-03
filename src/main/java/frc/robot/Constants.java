@@ -35,6 +35,9 @@ public final class Constants {
      * PDP ---------------------------
      */
 
+
+    // Really Important Constants
+    public static final String mosPreferedMeasurement = "feet";
     // Control Panel Constants
     public static final int CONTROL_PANEL_MOTOR_PORT = 12; // CAN ID#
     public static final boolean CONTROL_PANEL_INVERTED = false; // Going the wrong way?
@@ -146,7 +149,7 @@ public final class Constants {
 
     /*
      * [Name Low-Speed High Speed]
-     * 
+     *
      */
 
     // public static String[][] driverInputArray = new String{{"Christian Piper",

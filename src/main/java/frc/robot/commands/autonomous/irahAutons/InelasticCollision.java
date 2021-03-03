@@ -2,7 +2,8 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.autonomous.autons;
+
+package frc.robot.commands.autonomous.irahAutons;
 
 import java.util.List;
 
@@ -19,12 +20,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.subsystems.DriveTrain;
 
+//This is the auton for the Bounce Path auton challenge
+
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Slalom extends SequentialCommandGroup {
+public class InelasticCollision extends SequentialCommandGroup {
   /** Creates a new Bounce. */
-  public Slalom(DriveTrain driveTrain) {
+  public InelasticCollision(DriveTrain driveTrain) {
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(Constants.ksVolts,
         Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter), Constants.kDriveKinematics, 10);
@@ -36,7 +39,7 @@ public class Slalom extends SequentialCommandGroup {
             .setKinematics(Constants.kDriveKinematics)
             // Apply the voltage constraint
             .addConstraint(autoVoltageConstraint);
-            
+
             Trajectory SlalomTrajectory = TrajectoryGenerator.generateTrajectory(
         // Start at the origin facing the +X direction
         new Pose2d(Units.feetToMeters(5.96), Units.feetToMeters(2.75),  Rotation2d.fromDegrees(44.578)),

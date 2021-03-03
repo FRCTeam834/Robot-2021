@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.commands.*;
 import frc.robot.commands.autonomous.autons.*;
-import frc.robot.commands.autonomous.autons.Slalom;
+import frc.robot.commands.autonomous.irahAutons.*;
 import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.autonomous.EmptyShooterNoVision;
 import frc.robot.commands.autonomous.ShooterToSpeed;
@@ -69,7 +69,7 @@ public class RobotContainer {
   public UsbCamera camera;
   public static GimbalLock gimbalLock;
   public static NavX navX;
-  
+
   //Commands
   private final DriveNormal driveNormal = new DriveNormal();
   private final DriveSlowSpeed driveSlowSpeed = new DriveSlowSpeed();
@@ -101,8 +101,8 @@ public class RobotContainer {
   private final SnapTo180 snapTo180 = new SnapTo180();
   private final  DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
   private final TestAuto testAuto = new TestAuto(driveTrain);
-  private final Slalom slalom = new Slalom(driveTrain);
-
+  private final SlalomIBarelyKnowEm slalom = SlalomIBarelyKnowEm(driveTrain);
+  //private final SlalomIBarelyKnowEm slalomIBarelyKnowEm = SlalomIBarelyKnowEm(driveTrain);
   private final Joystick leftJoystick = new Joystick(0);
   private final Joystick rightJoystick = new Joystick(1);
   private final XboxController xbox = new XboxController(2);
@@ -129,7 +129,7 @@ public class RobotContainer {
       // Arcade Buttons
       BGTL = new JoystickButton(launchpad, 7), BGTM = new JoystickButton(launchpad, 2),
       BGTR = new JoystickButton(launchpad, 4), BGML = new JoystickButton(launchpad, 1),
-      BGMM = new JoystickButton(launchpad, 6), 
+      BGMM = new JoystickButton(launchpad, 6),
       BGMR = new JoystickButton(launchpad, 3),
       BGBL = new JoystickButton(launchpad, 10), BGBM = new JoystickButton(launchpad, 9),
       BGBR = new JoystickButton(launchpad, 8);
@@ -148,7 +148,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    autonChooser.addOption("Slalom", slalom);
+    //autonChooser.addOption("Slalom", slalom);
     autonChooser.addOption("Test Path", testAuto);
     SmartDashboard.putData("Auto Chooser", autonChooser);
   }
@@ -193,22 +193,22 @@ public class RobotContainer {
 
     // conveyor/intake buttons
     xboxB.toggleWhenPressed(runConveyorSensor);
-    
+
     xboxLB.whenHeld(new InstantCommand(ballIntake::startBackwards, ballIntake));
 
     //start intake
     xboxRB.whileHeld(() -> ballIntake.start(1.0));
     //conveyor backwards
     BGMR.whenPressed(() -> conveyor.start(-.75));
-    
+
     //stop conveyor
     BGMM.whenPressed(new InstantCommand(conveyor::stop, conveyor));
     // BGMR.whenHeld(runConveyorBackward);
     // add things for conveyor that I'm confused about
- 
+
 
     // climber
-  
+
 
     // BGML.whenPressed();
     // BGMM.whenPressed();
