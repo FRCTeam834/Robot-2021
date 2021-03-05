@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomous.autons.*;
 import frc.robot.commands.autonomous.irahAutons.*;
+import frc.robot.commands.autonomous.irahAutons.DoABarrelRoll;
 import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.autonomous.EmptyShooterNoVision;
 import frc.robot.commands.autonomous.ShooterToSpeed;
@@ -101,8 +102,11 @@ public class RobotContainer {
   private final SnapTo180 snapTo180 = new SnapTo180();
   private final  DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
   private final TestAuto testAuto = new TestAuto(driveTrain);
-  private final SlalomIBarelyKnowEm slalom = SlalomIBarelyKnowEm(driveTrain);
-  //private final SlalomIBarelyKnowEm slalomIBarelyKnowEm = SlalomIBarelyKnowEm(driveTrain);
+  private final SlalomIBarelyKnowEm slalom = new SlalomIBarelyKnowEm(driveTrain);
+  private final Beeline pathB = new Beeline();
+  private final PlanA pathA = new PlanA();
+  private final DoABarrelRoll barrelRoll = new DoABarrelRoll(driveTrain);
+  private final InelasticCollision bounce = new InelasticCollision(driveTrain);
   private final Joystick leftJoystick = new Joystick(0);
   private final Joystick rightJoystick = new Joystick(1);
   private final XboxController xbox = new XboxController(2);
@@ -148,7 +152,11 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    //autonChooser.addOption("Slalom", slalom);
+    autonChooser.addOption("Slalom", slalom);
+    autonChooser.addOption("Path B", pathB);
+    autonChooser.addOption("Path A", pathA);
+    autonChooser.addOption("Barrel Race", barrelRoll);
+    autonChooser.addOption("Bounce Path", bounce);
     autonChooser.addOption("Test Path", testAuto);
     SmartDashboard.putData("Auto Chooser", autonChooser);
   }
