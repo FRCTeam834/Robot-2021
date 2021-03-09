@@ -100,7 +100,7 @@ public class RobotContainer {
   private final ResetYaw resetYaw = new ResetYaw();
   private final SnapTo0 snapTo0 = new SnapTo0();
   private final SnapTo180 snapTo180 = new SnapTo180();
-  private final  DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
+  private final DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
   private final TestAuto testAuto = new TestAuto(driveTrain);
   private final SlalomIBarelyKnowEm slalom = new SlalomIBarelyKnowEm(driveTrain);
   private final Beeline pathB = new Beeline();
@@ -131,6 +131,19 @@ public class RobotContainer {
       rJoystick11 = new JoystickButton(rightJoystick, 11),
 
       // Arcade Buttons
+      /*
+      Button Naming Convention:
+      BG = Button Group
+      TL = Top Left
+      TM = Top Middle
+      TR = Top Right
+      ML = Middle Left
+      MM = Middle Middle
+      MR = Middle RIght
+      BL = Bottom Left
+      BM = Bottom Middle
+      BR = Bottom Right
+      */
       BGTL = new JoystickButton(launchpad, 7), BGTM = new JoystickButton(launchpad, 2),
       BGTR = new JoystickButton(launchpad, 4), BGML = new JoystickButton(launchpad, 1),
       BGMM = new JoystickButton(launchpad, 6),
@@ -185,53 +198,56 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // drive speed buttons
-    lJoystick1.whenPressed(driveSlowSpeed);
-    rJoystick1.whenPressed(() -> driveTrain.setDriveWithMultiplier(.5));
-    rJoystick2.whenPressed(driveMaxSpeed);
-    lJoystick2.whenPressed(driveInverted);
+    /*Once all commands are inlined, organize them by subsystem. Then, use the search function (second icon on the left) and search for uses 
+    of the command. Ex. search "driveNormal" and make all places where that is used into an inlined command (oter than robot.java. robot.java is weird)
+    This might be the only place some of these are used and thats ok. Once that's done we can delete the command files.
+    */ 
 
-    // shooter buttons
+    // Drive
+
+    //drive slow
+    lJoystick1.whenPressed(() -> driveTrain.setDriveWithMultiplier(0.25));
+    
+    //drive normal
+    rJoystick1.whenPressed(() -> driveTrain.setDriveWithMultiplier(.5));
+
+    //drive fast/max speed
+    rJoystick2.whenPressed(() -> driveTrain.setDriveWithMultiplier(1));
+
+    //drive inverted
+    lJoystick2.whenPressed(driveInverted); 
+
+    // Shooter
+    
+    //Aiming and shooting autonomous routine
     xboxA.whenPressed(aimAndShoot);
+
+    //Start the shooter
     BGTL.toggleWhenPressed(runShooter);
+
+    //Hood
     // BGTR.whileHeld(runPivotUp);
     // BGMR.whileHeld(runPivotDown);
-    BGTR.whenPressed(snapTo0);
-    BGMR.whenPressed(snapTo180);
 
-    // conveyor/intake buttons
+    // Coveyor
+
+    //Run conveyor
     xboxB.toggleWhenPressed(runConveyorSensor);
 
-    xboxLB.whenHeld(new InstantCommand(ballIntake::startBackwards, ballIntake));
-
-    //start intake
-    xboxRB.whileHeld(() -> ballIntake.start(1.0));
     //conveyor backwards
     BGMR.whenPressed(() -> conveyor.start(-.75));
 
     //stop conveyor
     BGMM.whenPressed(new InstantCommand(conveyor::stop, conveyor));
-    // BGMR.whenHeld(runConveyorBackward);
-    // add things for conveyor that I'm confused about
 
+    //Intake
+    
+     //start intake
+     xboxRB.whileHeld(() -> ballIntake.start(1.0));
 
-    // climber
+    //reverse intake
+    xboxLB.whenHeld(new InstantCommand(ballIntake::startBackwards, ballIntake));
 
-
-    // BGML.whenPressed();
-    // BGMM.whenPressed();
-    // BGMR.whileHeld(runPivotUp);
-
-    // BGBL.whenPressed();
-    // BGBM.whenPressed();
-    // BGBR.whileHeld(runPivotDown);
-
-    /*
-     * //xboxStart.whileHeld(); //xboxBack.whileHeld(); //xboxB.whileHeld();
-     * //xboxA.whileHeld(); //xboxY.whileHeld(); //xboxX.whileHeld();
-     * xboxLB.whileHeld(runIntakeBackwards); xboxRB.whileHeld(runIntake);
-     * //xboxLJB.whileHeld();
-     */
   }
 
   /**

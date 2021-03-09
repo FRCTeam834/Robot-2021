@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
 
     led.set(lights);
-
+    /*
     if (running) {
 
       m = o;
@@ -205,6 +205,7 @@ public class Robot extends TimedRobot {
       }
 
     }
+    */
 
   }
 
@@ -251,7 +252,8 @@ public class Robot extends TimedRobot {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
+    }
+/*
     if (SmartDashboard.getString("DB/String 1", "").equalsIgnoreCase("Record") && !recordStatus) {
       recordStatus = true;
       systemTimeStart = System.currentTimeMillis() / 1000;
@@ -379,7 +381,7 @@ public class Robot extends TimedRobot {
     }
 
   }
-
+*/
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
