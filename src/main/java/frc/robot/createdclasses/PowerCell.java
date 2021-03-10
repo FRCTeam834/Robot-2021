@@ -3,7 +3,7 @@ package frc.robot.createdclasses;
 import java.util.ArrayList;
 import java.awt.Point;
 
-import frc.robot.Constants;
+import frc.robot.Constants.VisionAutonConstants;
 
 public class PowerCell {
 
@@ -41,7 +41,7 @@ public class PowerCell {
 
     public double getDistance() {
 
-        return Math.sqrt((Math.pow(Constants.BALL_DISTANCE, 2) * Constants.BALL_AREA) / getArea());
+        return Math.sqrt((Math.pow(VisionAutonConstants.BALL_DISTANCE, 2) * VisionAutonConstants.BALL_AREA) / getArea());
 
     }
 

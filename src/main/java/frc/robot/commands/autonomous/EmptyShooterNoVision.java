@@ -8,11 +8,9 @@
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Robot;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.ConveyorConstants;
 import frc.robot.RobotContainer;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Shooter;
 
 public class EmptyShooterNoVision extends CommandBase {
   /**
@@ -32,8 +30,8 @@ public class EmptyShooterNoVision extends CommandBase {
     time = 2;
     timeStart = System.currentTimeMillis();
     finished = false;
-    RobotContainer.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
-    RobotContainer.conveyor.start(Constants.AUTON_CONVEYOR_SPEED);
+    RobotContainer.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
+    RobotContainer.conveyor.start(ConveyorConstants.AUTON_CONVEYOR_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

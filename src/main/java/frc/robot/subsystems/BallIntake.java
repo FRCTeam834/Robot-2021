@@ -12,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.intake.StopIntake;
 
 
@@ -21,13 +21,13 @@ public class BallIntake extends SubsystemBase {
    * Creates a new BallIntake.
    */
 
-  WPI_VictorSPX intakeMotor = new WPI_VictorSPX(Constants.INTAKE_MOTOR_PORT);
+  WPI_VictorSPX intakeMotor = new WPI_VictorSPX(IntakeConstants.INTAKE_MOTOR_PORT);
 
   Joystick j = new Joystick(0);
   Joystick j2 = new Joystick(1);
 
   public BallIntake() {
-    intakeMotor.setInverted(Constants.INTAKE_INVERTED);
+    intakeMotor.setInverted(IntakeConstants.INTAKE_INVERTED);
   }
 
   @Override

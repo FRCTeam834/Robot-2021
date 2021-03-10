@@ -8,6 +8,7 @@
 
 package frc.robot.subsystems;
 
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
@@ -26,19 +27,20 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import frc.robot.Constants;
+import frc.robot.Constants.DrivetrainConstants;
+import frc.robot.Constants.AutonConstants;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
 public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
    */
-  CANSparkMax leftDrive1 = new CANSparkMax(Constants.LEFT_DRIVE_MOTOR_1, CANSparkMax.MotorType.kBrushless);
-  CANSparkMax leftDrive2 = new CANSparkMax(Constants.LEFT_DRIVE_MOTOR_2, CANSparkMax.MotorType.kBrushless);
-  CANSparkMax leftDrive3 = new CANSparkMax(Constants.LEFT_DRIVE_MOTOR_3, CANSparkMax.MotorType.kBrushless);
-  CANSparkMax rightDrive1 = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_1, CANSparkMax.MotorType.kBrushless);
-  CANSparkMax rightDrive2 = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_2, CANSparkMax.MotorType.kBrushless);
-  CANSparkMax rightDrive3 = new CANSparkMax(Constants.RIGHT_DRIVE_MOTOR_3, CANSparkMax.MotorType.kBrushless);
+  CANSparkMax leftDrive1 = new CANSparkMax(DrivetrainConstants.LEFT_DRIVE_MOTOR_1, CANSparkMax.MotorType.kBrushless);
+  CANSparkMax leftDrive2 = new CANSparkMax(DrivetrainConstants.LEFT_DRIVE_MOTOR_2, CANSparkMax.MotorType.kBrushless);
+  CANSparkMax leftDrive3 = new CANSparkMax(DrivetrainConstants.LEFT_DRIVE_MOTOR_3, CANSparkMax.MotorType.kBrushless);
+  CANSparkMax rightDrive1 = new CANSparkMax(DrivetrainConstants.RIGHT_DRIVE_MOTOR_1, CANSparkMax.MotorType.kBrushless);
+  CANSparkMax rightDrive2 = new CANSparkMax(DrivetrainConstants.RIGHT_DRIVE_MOTOR_2, CANSparkMax.MotorType.kBrushless);
+  CANSparkMax rightDrive3 = new CANSparkMax(DrivetrainConstants.RIGHT_DRIVE_MOTOR_3, CANSparkMax.MotorType.kBrushless);
 
   SpeedControllerGroup leftDriveGroup = new SpeedControllerGroup(leftDrive1, leftDrive2, leftDrive3);
   SpeedControllerGroup rightDriveGroup = new SpeedControllerGroup(rightDrive1, rightDrive2, rightDrive3);
@@ -51,8 +53,8 @@ public class DriveTrain extends SubsystemBase {
 
   public DriveTrain() {
 
-    leftDriveGroup.setInverted(Constants.LEFT_DRIVE_INVERTED);
-    rightDriveGroup.setInverted(Constants.RIGHT_DRIVE_INVERTED);
+    leftDriveGroup.setInverted(DrivetrainConstants.LEFT_DRIVE_INVERTED);
+    rightDriveGroup.setInverted(DrivetrainConstants.RIGHT_DRIVE_INVERTED);
     resetOdometry(new Pose2d());
     
 
@@ -66,12 +68,12 @@ public class DriveTrain extends SubsystemBase {
     rightDrive1.getEncoder().setPosition(0);
     rightDrive2.getEncoder().setPosition(0);
     rightDrive3.getEncoder().setPosition(0);
-    leftDrive1.getEncoder().setPositionConversionFactor(Constants.DRIVE_CONVERSION_FACTOR);
-    leftDrive2.getEncoder().setPositionConversionFactor(Constants.DRIVE_CONVERSION_FACTOR);
-    leftDrive3.getEncoder().setPositionConversionFactor(Constants.DRIVE_CONVERSION_FACTOR);
-    rightDrive1.getEncoder().setPositionConversionFactor(Constants.DRIVE_CONVERSION_FACTOR);
-    rightDrive2.getEncoder().setPositionConversionFactor(Constants.DRIVE_CONVERSION_FACTOR);
-    rightDrive3.getEncoder().setPositionConversionFactor(Constants.DRIVE_CONVERSION_FACTOR);
+    leftDrive1.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
+    leftDrive2.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
+    leftDrive3.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
+    rightDrive1.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
+    rightDrive2.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
+    rightDrive3.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
 
   }
 
@@ -187,7 +189,7 @@ public class DriveTrain extends SubsystemBase {
   public Command commandForTrajectory(Trajectory trajectory, Boolean initPose) {
 
     // Reset the encoders, making them at zero so the Ramsete will be accurate
-    resetEncoderPosition();
+    RobotContainer.driveTrain.resetOdometry(trajectory.getInitialPose());
 
     // Create a new Ramsete command
     RamseteCommand ramseteCommand = new RamseteCommand(
@@ -199,19 +201,19 @@ public class DriveTrain extends SubsystemBase {
       RobotContainer.driveTrain::getPose,
 
       // A Ramsete controller
-      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+      new RamseteController(AutonConstants.kRamseteB, AutonConstants.kRamseteZeta),
 
       // Motor feedforwards to control wheel speeds
-      new SimpleMotorFeedforward(Constants.ksVolts, Constants.kvVoltSecondsPerMeter, Constants.kaVoltSecondsSquaredPerMeter),
+      new SimpleMotorFeedforward(AutonConstants.ksVolts, AutonConstants.kvVoltSecondsPerMeter, AutonConstants.kaVoltSecondsSquaredPerMeter),
 
       // The kinematics and wheel speed objects
-      Constants.kDriveKinematics, RobotContainer.driveTrain::getWheelSpeeds,
+      AutonConstants.kDriveKinematics, RobotContainer.driveTrain::getWheelSpeeds,
 
       // Left side PID controller
-      new PIDController(Constants.kPDriveVel, 0, 0),
+      new PIDController(AutonConstants.kPDriveVel, 0, 0),
 
       // Right side PID controller
-      new PIDController(Constants.kPDriveVel, 0, 0),
+      new PIDController(AutonConstants.kPDriveVel, 0, 0),
 
       // RamseteCommand passes volts to the callback
       RobotContainer.driveTrain::tankDriveVolts, RobotContainer.driveTrain);

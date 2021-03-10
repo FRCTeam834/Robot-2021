@@ -11,7 +11,7 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 //import frc.robot.commands.MoveToPosition; (Figure out replacement)
 // Parameters class
-import frc.robot.Constants;
+import frc.robot.Constants.LEDConstants;
 import frc.robot.commands.snapto.SnapToGoal;
 import frc.robot.commands.autonomous.*;
 import edu.wpi.first.wpilibj.util.Units;
@@ -56,7 +56,7 @@ public class PlanA extends SequentialCommandGroup {
         angle4 = 0; distance4 = Units.inchesToMeters(160);
 
       // Makes lights red because red path
-        Robot.lights = Constants.LAVA_RAINBOW;
+        Robot.lights = LEDConstants.LAVA_RAINBOW;
     }
     // Blue Path
     else if(RobotContainer.ultrasonicSensor.withinRange(Units.inchesToMeters(240), Units.inchesToMeters(10))) {
@@ -73,11 +73,11 @@ public class PlanA extends SequentialCommandGroup {
         angle4 = 0; distance4 = Units.inchesToMeters(70);
 
       // LED
-        Robot.lights = Constants.SKY_BLUE;
+        Robot.lights = LEDConstants.SKY_BLUE;
 
     }
     else{
-        Robot.lights = Constants.STROBE_RED;
+        Robot.lights = LEDConstants.STROBE_RED;
     }
 
     addCommands(new SnapToGoal(angle1), new DriveAndIntake(distance1), new SnapToGoal(angle2), new DriveAndIntake(distance2), new SnapToGoal(angle3), new DriveAndIntake(distance3), new SnapToGoal(angle4), new DriveAndIntake(distance4));

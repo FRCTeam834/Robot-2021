@@ -8,7 +8,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.RobotContainer;
 
 public class RunShooter extends CommandBase {
@@ -28,7 +28,7 @@ public class RunShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
+    RobotContainer.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
     //RobotContainer.shooter.setIntakeToJoystick();
   }
 

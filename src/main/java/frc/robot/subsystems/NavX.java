@@ -23,7 +23,6 @@ public class NavX extends SubsystemBase {
   AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   public NavX() {
-
   }
 
   @Override

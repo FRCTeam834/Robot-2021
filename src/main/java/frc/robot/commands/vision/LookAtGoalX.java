@@ -8,7 +8,7 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.Constants.VisionAutonConstants;
 import frc.robot.RobotContainer;
 import frc.robot.createdclasses.Goal;
 
@@ -58,15 +58,15 @@ public class LookAtGoalX extends CommandBase {
 
     double deviation = goal.getCenterX() - 320;
 
-    if (-1 * Constants.TOLERANCE < deviation && deviation < Constants.TOLERANCE) {
+    if (-1 * VisionAutonConstants.TOLERANCE < deviation && deviation < VisionAutonConstants.TOLERANCE) {
 
-    } else if (deviation < -1 * Constants.TOLERANCE) {
+    } else if (deviation < -1 * VisionAutonConstants.TOLERANCE) {
 
-      RobotContainer.driveTrain.setDrive(-deviation * Constants.SPEED_INDEX, deviation * Constants.SPEED_INDEX);
+      RobotContainer.driveTrain.setDrive(-deviation * VisionAutonConstants.SPEED_INDEX, deviation * VisionAutonConstants.SPEED_INDEX);
 
-    } else if (deviation > Constants.TOLERANCE) {
+    } else if (deviation > VisionAutonConstants.TOLERANCE) {
 
-      RobotContainer.driveTrain.setDrive(deviation * Constants.SPEED_INDEX, -deviation * Constants.SPEED_INDEX);
+      RobotContainer.driveTrain.setDrive(deviation * VisionAutonConstants.SPEED_INDEX, -deviation * VisionAutonConstants.SPEED_INDEX);
 
     }
 

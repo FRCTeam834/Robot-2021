@@ -12,19 +12,19 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.ConveyorConstants;
 
 public class Conveyor extends SubsystemBase {
   /**
    * Creates a new Conveyor.
    */
-  WPI_VictorSPX conveyorMotor = new WPI_VictorSPX(Constants.CONVEYOR_MOTOR_PORT);
-  DigitalInput bottomSensor = new DigitalInput(Constants.BALL_SENSOR_PORT);
-  DigitalInput topSensor = new DigitalInput(Constants.EMPTY_SENSOR_PORT);
+  WPI_VictorSPX conveyorMotor = new WPI_VictorSPX(ConveyorConstants.CONVEYOR_MOTOR_PORT);
+  DigitalInput bottomSensor = new DigitalInput(ConveyorConstants.BALL_SENSOR_PORT);
+  DigitalInput topSensor = new DigitalInput(ConveyorConstants.EMPTY_SENSOR_PORT);
 
   
   public Conveyor() {
-    conveyorMotor.setInverted(Constants.CONVEYOR_INVERTED);
+    conveyorMotor.setInverted(ConveyorConstants.CONVEYOR_INVERTED);
   }
 
   @Override

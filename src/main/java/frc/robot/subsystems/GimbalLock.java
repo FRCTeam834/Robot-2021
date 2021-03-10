@@ -13,18 +13,18 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;;
 
 public class GimbalLock extends SubsystemBase {
   /**
    * Creates a new ShooterPivot.
    */
 
-  WPI_TalonSRX pivot = new WPI_TalonSRX(Constants.SHOOTER_PIVOT_MOTOR_PORT);
-  DigitalInput limitSwitch = new DigitalInput(Constants.HOOD_LIMIT_SWITCH_PORT);
+  WPI_TalonSRX pivot = new WPI_TalonSRX(ShooterConstants.SHOOTER_PIVOT_MOTOR_PORT);
+  DigitalInput limitSwitch = new DigitalInput(ShooterConstants.HOOD_LIMIT_SWITCH_PORT);
 
   public GimbalLock() {
-    pivot.setInverted(Constants.SHOOTER_PIVOT_INVERTED);
+    pivot.setInverted(ShooterConstants.SHOOTER_PIVOT_INVERTED);
     pivot.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
 
@@ -56,7 +56,7 @@ public class GimbalLock extends SubsystemBase {
 
   public double getEncoder() {
 
-    return pivot.getSelectedSensorPosition() / 4096 * Math.PI * 2 * Constants.HOOD_GEAR_RATIO + 25 * 2 * Math.PI / 360;
+    return pivot.getSelectedSensorPosition() / 4096 * Math.PI * 2 * ShooterConstants.HOOD_GEAR_RATIO + 25 * 2 * Math.PI / 360;
 
   }
 

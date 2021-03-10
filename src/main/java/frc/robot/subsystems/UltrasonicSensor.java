@@ -6,13 +6,13 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import frc.robot.Constants;
+import frc.robot.Constants.UltrasonicConstants;
 
 public class UltrasonicSensor extends SubsystemBase {
   /** Creates a new Ultrasonic. */
 
   // Create a new Ultrasonic sensor
-  Ultrasonic sensor = new Ultrasonic(Constants.US_PING, Constants.US_ECHO);
+  Ultrasonic sensor = new Ultrasonic(UltrasonicConstants.US_PING, UltrasonicConstants.US_ECHO);
 
   // Main constructor
   public UltrasonicSensor() {}

@@ -8,9 +8,10 @@
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ConveyorConstants;
 
 import frc.robot.RobotContainer;
+import frc.robot.Constants.ShooterConstants;
 
 
 public class EmptyShooter extends CommandBase {
@@ -42,8 +43,8 @@ public class EmptyShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
-    RobotContainer.conveyor.start(Constants.AUTON_CONVEYOR_SPEED);
+    RobotContainer.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
+    RobotContainer.conveyor.start(ConveyorConstants.AUTON_CONVEYOR_SPEED);
     /*if (RobotContainer.ballCount == 0) {
       isFinished = true; //may need to remove exclamation point
     }

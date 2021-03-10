@@ -8,8 +8,7 @@
 package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.Robot;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.RobotContainer;
 
 public class ShooterToSpeed extends CommandBase {
@@ -28,7 +27,7 @@ public class ShooterToSpeed extends CommandBase {
   public void initialize() {
 
     isFinished = false;
-    RobotContainer.shooter.getMotor().setVoltage(Constants.S_WHEEL_VOLTAGE);
+    RobotContainer.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
 
   }
 
@@ -36,7 +35,7 @@ public class ShooterToSpeed extends CommandBase {
   @Override
   public void execute() {
 
-    if (RobotContainer.shooter.getEncoder().getVelocity() >= (Constants.S_WHEEL_SPEED * 60)) {
+    if (RobotContainer.shooter.getEncoder().getVelocity() >= (ShooterConstants.S_WHEEL_SPEED * 60)) {
 
       isFinished = true;
 

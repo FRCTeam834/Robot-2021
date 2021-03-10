@@ -9,7 +9,7 @@ package frc.robot.commands.hood;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 public class RunPivotDown extends CommandBase {
   /**
@@ -22,7 +22,7 @@ public class RunPivotDown extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.gimbalLock.tiltDown(Constants.SHOOTER_PIVOT_SPEED);
+    RobotContainer.gimbalLock.tiltDown(ShooterConstants.SHOOTER_PIVOT_SPEED);
 
   }
 

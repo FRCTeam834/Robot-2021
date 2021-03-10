@@ -3,7 +3,7 @@ package frc.robot.createdclasses;
 import java.util.ArrayList;
 import java.awt.Point;
 
-import frc.robot.Constants;
+import frc.robot.Constants.VisionAutonConstants;;
 
 public class Goal {
 
@@ -47,7 +47,7 @@ public class Goal {
 
     public double getDistance() {
 
-        return Constants.GOAL_DISTANCE * Constants.GOAL_HEIGHT / getHeight();
+        return VisionAutonConstants.GOAL_DISTANCE * VisionAutonConstants.GOAL_HEIGHT / getHeight();
 
     }
 

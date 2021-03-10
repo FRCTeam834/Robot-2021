@@ -8,7 +8,7 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.RobotContainer;
 import frc.robot.createdclasses.Goal;
 import frc.robot.subsystems.GimbalLock;
@@ -55,11 +55,11 @@ public class LookAtGoalY extends CommandBase {
     }
 
     double distance = goal.getDistance() * Math.sin(g.getEncoder()) / 12; //The 5 is a placeholder for shooter angle
-    double v = Constants.S_WHEEL_SPEED * Constants.WHEEL_CIRCUMFERENCE;
+    double v = ShooterConstants.S_WHEEL_SPEED * ShooterConstants.WHEEL_CIRCUMFERENCE;
     double phi = g.getEncoder();
-    double a = Math.pow(distance - Constants.SHOOTER_MOUTH_WIDTH * Math.sin(phi), 2) / (v);
-    double b = distance - Constants.SHOOTER_MOUTH_WIDTH * Math.sin(phi);
-    double c = 98.25 / 12 - Constants.SHOOTER_MOUTH_WIDTH * Math.cos(phi);
+    double a = Math.pow(distance - ShooterConstants.SHOOTER_MOUTH_WIDTH * Math.sin(phi), 2) / (v);
+    double b = distance - ShooterConstants.SHOOTER_MOUTH_WIDTH * Math.sin(phi);
+    double c = 98.25 / 12 - ShooterConstants.SHOOTER_MOUTH_WIDTH * Math.cos(phi);
     angleRequirement = 2 * (Math.atan(b - Math.sqrt(-Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2) / (a + c))));
     if (angleRequirement < 0)
       angleRequirement = 2 * (Math.atan(b + Math.sqrt(-Math.pow(a, 2) + Math.pow(b, 2) + Math.pow(c, 2) / (a + c))));
@@ -73,11 +73,11 @@ public class LookAtGoalY extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (g.getEncoder() < angleRequirement + Constants.ANGLE_TOLERANCE ) {
-      g.tiltDown(Constants.GIMBAL_MULTIPLIER * (angleRequirement - g.getEncoder()));
-    } else if (g.getEncoder() > angleRequirement - Constants.ANGLE_TOLERANCE) {
-      g.tiltUp(Constants.GIMBAL_MULTIPLIER * (angleRequirement - g.getEncoder()));
-    } else if (g.getEncoder() > angleRequirement - Constants.ANGLE_TOLERANCE || g.getEncoder() < angleRequirement + Constants.ANGLE_TOLERANCE) {
+    if (g.getEncoder() < angleRequirement + ShooterConstants.ANGLE_TOLERANCE ) {
+      g.tiltDown(ShooterConstants.GIMBAL_MULTIPLIER * (angleRequirement - g.getEncoder()));
+    } else if (g.getEncoder() > angleRequirement - ShooterConstants.ANGLE_TOLERANCE) {
+      g.tiltUp(ShooterConstants.GIMBAL_MULTIPLIER * (angleRequirement - g.getEncoder()));
+    } else if (g.getEncoder() > angleRequirement - ShooterConstants.ANGLE_TOLERANCE || g.getEncoder() < angleRequirement + ShooterConstants.ANGLE_TOLERANCE) {
       g.stop();}
   }
 

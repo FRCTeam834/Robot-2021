@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+/*
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -18,17 +19,18 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.opencv.core.Point;
-
+*/
 import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.Spark;
 
+/*
 import frc.robot.commands.drive.DriveMaxSpeed;
 import frc.robot.commands.drive.DriveNormal;
 import frc.robot.commands.drive.DriveSlowSpeed;
@@ -37,6 +39,7 @@ import frc.robot.commands.intake.RunIntakeBackwards;
 import frc.robot.commands.intake.StopIntake;
 import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.vision.ToggleVision;
+*/
 import frc.robot.createdclasses.Goal;
 
 /**
@@ -59,7 +62,7 @@ public class Robot extends TimedRobot {
   public static double lights = -.45;
   Spark led;
 
-
+  /*
   private int cycleCount = 0;
   private boolean recordStatus = false;
   private Object[][] commandValues = new Object[3][1500];
@@ -70,6 +73,7 @@ public class Robot extends TimedRobot {
   private int o = 0; // index
   private Object[][] commandVals = new Object[3][1500];
   private XboxController boxX = new XboxController(2);
+  */
   private Goal goal;
   String gameData = "";
 
@@ -230,7 +234,7 @@ public class Robot extends TimedRobot {
 
     led.set(lights);
 
-    SmartDashboard.putNumber("YAW", RobotContainer.navX.getYaw());
+    SmartDashboard.putString("Rot2D", RobotContainer.navX.getRotation2d().toString());
     SmartDashboard.putNumber("Right Encoder", RobotContainer.driveTrain.getRightEncoderValue());
     try {
 
