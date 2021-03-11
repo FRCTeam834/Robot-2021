@@ -36,21 +36,21 @@ public class ResetYaw extends CommandBase {
 
     //turn robot to face 0 or 180(if inverted)
     /*if(!RobotContainer.yawBackwards && RobotContainer.navX.getYaw() < 0){ //if robot to left of 0, turn right
-      RobotContainer.driveTrain.setDrive(0.5, -0.5);
+      Robot.driveTrain.setDrive(0.5, -0.5);
       lMotor = 1;
       rMotor = -1;
     } else if (!RobotContainer.yawBackwards && RobotContainer.navX.getYaw() > 0) { //if robot to right of 0, turn left
-      RobotContainer.driveTrain.setDrive(-0.5, 0.5);
+      Robot.driveTrain.setDrive(-0.5, 0.5);
       lMotor = -1;
       rMotor = 1;
     } */
     //turn robot to face 180. doesn't need to be turned to 0 if it is not inverted because duh
     if (Robot.yawBackwards && RobotContainer.navX.getYaw() < 0) { //if robot to right of 180, turn left
-      RobotContainer.driveTrain.setDrive(0.5, -0.5);
+      Robot.driveTrain.setDrive(0.5, -0.5);
       lMotor = -1;
       rMotor = 1;
     } else if (Robot.yawBackwards && RobotContainer.navX.getYaw() > 0) { //if robot to left of 180, turn right
-      RobotContainer.driveTrain.setDrive(-0.5, 0.5);
+      Robot.driveTrain.setDrive(-0.5, 0.5);
       lMotor = 1;
       rMotor = -1;
     } else if (!Robot.yawBackwards) {
@@ -64,7 +64,7 @@ public class ResetYaw extends CommandBase {
     //turning to 180 (if inverted)
     if (Robot.yawBackwards) {
       if(Math.abs(RobotContainer.navX.getYaw()) >= 165) {
-       RobotContainer.driveTrain.setDrive(lMotor*.25, rMotor*.25);
+       Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
        if(Math.abs(RobotContainer.navX.getYaw()) >= 175) {
          //now the that we are facing 180, we can reset yaw so it is no longer backwards!
          RobotContainer.navX.resetYaw(); 
@@ -76,7 +76,7 @@ public class ResetYaw extends CommandBase {
     /*//turning to 0 (not inverted)
     if (!RobotContainer.yawBackwards) {
       if(Math.abs(RobotContainer.navX.getYaw()) <= 10) {
-       RobotContainer.driveTrain.setDrive(lMotor*.25, rMotor*.25);
+       Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
        if(Math.abs(RobotContainer.navX.getYaw()) <= 3) {
          finished = true;
        }
@@ -88,7 +88,7 @@ public class ResetYaw extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.driveTrain.setDrive(0, 0);
+    Robot.driveTrain.setDrive(0, 0);
   }
 
   // Returns true when the command should end.

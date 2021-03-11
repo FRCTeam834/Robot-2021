@@ -8,7 +8,7 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class DriveMaxSpeed extends CommandBase {
@@ -17,20 +17,20 @@ public class DriveMaxSpeed extends CommandBase {
    */
   public DriveMaxSpeed() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.driveTrain);
+    addRequirements(Robot.driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.driveTrain.setDrive(0, 0);
+    Robot.driveTrain.setDrive(0, 0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     //set robot speed between -1 and 1 depending on joystick position
-    RobotContainer.driveTrain.setDriveWithMultiplier(1.0);
+    Robot.driveTrain.setDriveWithMultiplier(1.0);
 
   }
 

@@ -5,11 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drive;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
 
@@ -24,8 +24,8 @@ public class DriveNormal extends CommandBase {
 
   public DriveNormal() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.driveTrain);
-    d = RobotContainer.driveTrain;
+    addRequirements(Robot.driveTrain);
+    d = Robot.driveTrain;
   }
 
   // Called when the command is initially scheduled.

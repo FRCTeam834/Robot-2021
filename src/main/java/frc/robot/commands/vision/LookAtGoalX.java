@@ -9,6 +9,7 @@ package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.VisionAutonConstants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.createdclasses.Goal;
 
@@ -22,7 +23,7 @@ public class LookAtGoalX extends CommandBase {
   public LookAtGoalX() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.EVSNetworkTables);
-    addRequirements(RobotContainer.driveTrain);
+    addRequirements(Robot.driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -62,11 +63,11 @@ public class LookAtGoalX extends CommandBase {
 
     } else if (deviation < -1 * VisionAutonConstants.TOLERANCE) {
 
-      RobotContainer.driveTrain.setDrive(-deviation * VisionAutonConstants.SPEED_INDEX, deviation * VisionAutonConstants.SPEED_INDEX);
+      Robot.driveTrain.setDrive(-deviation * VisionAutonConstants.SPEED_INDEX, deviation * VisionAutonConstants.SPEED_INDEX);
 
     } else if (deviation > VisionAutonConstants.TOLERANCE) {
 
-      RobotContainer.driveTrain.setDrive(deviation * VisionAutonConstants.SPEED_INDEX, -deviation * VisionAutonConstants.SPEED_INDEX);
+      Robot.driveTrain.setDrive(deviation * VisionAutonConstants.SPEED_INDEX, -deviation * VisionAutonConstants.SPEED_INDEX);
 
     }
 

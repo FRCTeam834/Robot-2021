@@ -189,7 +189,7 @@ public class DriveTrain extends SubsystemBase {
   public Command commandForTrajectory(Trajectory trajectory, Boolean initPose) {
 
     // Reset the encoders, making them at zero so the Ramsete will be accurate
-    RobotContainer.driveTrain.resetOdometry(trajectory.getInitialPose());
+    Robot.driveTrain.resetOdometry(trajectory.getInitialPose());
 
     // Create a new Ramsete command
     RamseteCommand ramseteCommand = new RamseteCommand(
@@ -198,7 +198,7 @@ public class DriveTrain extends SubsystemBase {
       trajectory,
 
       // Function for getting the pose of the robot
-      RobotContainer.driveTrain::getPose,
+      Robot.driveTrain::getPose,
 
       // A Ramsete controller
       new RamseteController(AutonConstants.kRamseteB, AutonConstants.kRamseteZeta),
@@ -207,7 +207,7 @@ public class DriveTrain extends SubsystemBase {
       new SimpleMotorFeedforward(AutonConstants.ksVolts, AutonConstants.kvVoltSecondsPerMeter, AutonConstants.kaVoltSecondsSquaredPerMeter),
 
       // The kinematics and wheel speed objects
-      AutonConstants.kDriveKinematics, RobotContainer.driveTrain::getWheelSpeeds,
+      AutonConstants.kDriveKinematics, Robot.driveTrain::getWheelSpeeds,
 
       // Left side PID controller
       new PIDController(AutonConstants.kPDriveVel, 0, 0),
@@ -216,12 +216,12 @@ public class DriveTrain extends SubsystemBase {
       new PIDController(AutonConstants.kPDriveVel, 0, 0),
 
       // RamseteCommand passes volts to the callback
-      RobotContainer.driveTrain::tankDriveVolts, RobotContainer.driveTrain);
+      Robot.driveTrain::tankDriveVolts, Robot.driveTrain);
 
     // Run path following command, then stop at the end.
     if (initPose) {
-      var reset = new InstantCommand(() -> RobotContainer.driveTrain.resetOdometry(trajectory.getInitialPose()));
-      return reset.andThen(ramseteCommand.andThen(() -> RobotContainer.driveTrain.tankDriveVolts(0, 0)));
+      var reset = new InstantCommand(() -> Robot.driveTrain.resetOdometry(trajectory.getInitialPose()));
+      return reset.andThen(ramseteCommand.andThen(() -> Robot.driveTrain.tankDriveVolts(0, 0)));
     } else {
       return ramseteCommand.andThen(() -> this.tankDriveVolts(0, 0));
     }

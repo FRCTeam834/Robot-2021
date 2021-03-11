@@ -8,6 +8,7 @@
 package frc.robot.commands.snapto;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class SnapToGoal extends CommandBase {
@@ -18,7 +19,7 @@ public class SnapToGoal extends CommandBase {
   boolean finished;
   public SnapToGoal(double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.driveTrain, RobotContainer.navX);   
+    addRequirements(Robot.driveTrain, RobotContainer.navX);   
     this.angle = angle;
   }
 
@@ -29,14 +30,14 @@ public class SnapToGoal extends CommandBase {
   
     lMotor = 1;
     rMotor = -1;
-    RobotContainer.driveTrain.setDrive(.5, -.5);
+    Robot.driveTrain.setDrive(.5, -.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(Math.abs(RobotContainer.navX.getYaw()) >= (angle-15)) { // spin slower once close for percision 
-      RobotContainer.driveTrain.setDrive(lMotor*.25, rMotor*.25);
+      Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
       if(Math.abs(RobotContainer.navX.getYaw()) >= (angle-5)) {
         //now the that we are facing angle, we can gg ez stop spinning
         finished = true;
@@ -48,7 +49,7 @@ public class SnapToGoal extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.driveTrain.setDrive(0,0);
+    Robot.driveTrain.setDrive(0,0);
   }
 
   // Returns true when the command should end.

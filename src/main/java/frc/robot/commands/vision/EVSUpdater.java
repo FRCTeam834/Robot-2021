@@ -8,6 +8,7 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class EVSUpdater extends CommandBase {
@@ -15,7 +16,7 @@ public class EVSUpdater extends CommandBase {
   public EVSUpdater() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(RobotContainer.EVSNetworkTables);
-    addRequirements(RobotContainer.driveTrain);
+    addRequirements(Robot.driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -32,19 +33,19 @@ public class EVSUpdater extends CommandBase {
     try {
       if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).get(1) > 360) {
 
-        RobotContainer.driveTrain.setDrive(-.08, .08);
+        Robot.driveTrain.setDrive(-.08, .08);
         System.out.println("turn left");
 
       } else if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).get(1) < 290) {
 
         System.out.println("turn right");
-        RobotContainer.driveTrain.setDrive(.08, -.08);
+        Robot.driveTrain.setDrive(.08, -.08);
 
       }
 
       else {
 
-        RobotContainer.driveTrain.stop();
+        Robot.driveTrain.stop();
       }
     } catch (Exception e) {
 

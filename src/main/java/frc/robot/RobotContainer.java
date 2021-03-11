@@ -22,10 +22,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-import frc.robot.commands.*;
+import frc.robot.commands.DriveNormal;
 import frc.robot.commands.autonomous.irahAutons.*;
-import frc.robot.commands.autonomous.irahAutons.DoABarrelRoll;
-import frc.robot.commands.autonomous.AimAndShoot;
+//import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.autonomous.EmptyShooterNoVision;
 import frc.robot.commands.autonomous.ShooterToSpeed;
 import frc.robot.commands.autonomous.autons.TestAuto;
@@ -58,7 +57,7 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new
   // ExampleCommand(m_exampleSubsystem);
   //Subsystems
-  public static DriveTrain driveTrain;
+  
   public static BallIntake ballIntake;
   public static UltrasonicSensor ultrasonicSensor = new UltrasonicSensor();
   //public static ControlPanelManip controlPanelManip;
@@ -71,41 +70,8 @@ public class RobotContainer {
   public static NavX navX;
 
   //Commands
-  private final DriveNormal driveNormal = new DriveNormal();
-  private final DriveSlowSpeed driveSlowSpeed = new DriveSlowSpeed();
-  private final DriveMaxSpeed driveMaxSpeed = new DriveMaxSpeed();
-  public final DriveInverted driveInverted = new DriveInverted();
-
-  private final RunIntake runIntake = new RunIntake();
-  private final RunIntakeBackwards runIntakeBackwards = new RunIntakeBackwards();
-  private final StopIntake stopIntake = new StopIntake();
-
-  private final RunShooter runShooter = new RunShooter();
-  private final StopShooter stopShooter = new StopShooter();
-
-  private final RunPivotUp runPivotUp = new RunPivotUp();
-  private final RunPivotDown runPivotDown = new RunPivotDown();
-
-  private final RunConveyor runConveyor = new RunConveyor();
-  private final RunConveyorSensor runConveyorSensor = new RunConveyorSensor();
-  private final RunConveyorBackward runConveyorBackward = new RunConveyorBackward();
-  private final StopConveyor stopConveyor = new StopConveyor();
-
-  private final ToggleVision toggleVision = new ToggleVision();
-  private final AimAndShoot aimAndShoot = new AimAndShoot();
-  private final ShooterToSpeed shooterToSpeed = new ShooterToSpeed();
-  private final DriveBackwardsDistance driveBackwardsDistance = new DriveBackwardsDistance(12);
-  private final EmptyShooterNoVision emptyShooterNoVision = new EmptyShooterNoVision();
-  private final ResetYaw resetYaw = new ResetYaw();
-  private final SnapTo0 snapTo0 = new SnapTo0();
-  private final SnapTo180 snapTo180 = new SnapTo180();
-  private final DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
-  private final TestAuto testAuto = new TestAuto(driveTrain);
-  private final SlalomIBarelyKnowEm slalom = new SlalomIBarelyKnowEm(driveTrain);
-  private final Beeline pathB = new Beeline();
-  private final PlanA pathA = new PlanA();
-  private final DoABarrelRoll barrelRoll = new DoABarrelRoll(driveTrain);
-  private final InelasticCollision bounce = new InelasticCollision(driveTrain);
+  //private final DriveNormal driveNormal = new DriveNormal();
+  
   private final Joystick leftJoystick = new Joystick(0);
   private final Joystick rightJoystick = new Joystick(1);
   private final XboxController xbox = new XboxController(2);
@@ -164,12 +130,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    autonChooser.addOption("Slalom", slalom);
-    autonChooser.addOption("Path B", pathB);
-    autonChooser.addOption("Path A", pathA);
-    autonChooser.addOption("Barrel Race", barrelRoll);
-    autonChooser.addOption("Bounce Path", bounce);
-    autonChooser.addOption("Test Path", testAuto);
+    autonChooser.addOption("Slalom", Robot.slalom);
+    autonChooser.addOption("Path B", Robot.pathB);
+    autonChooser.addOption("Path A", Robot.pathA);
+    autonChooser.addOption("Barrel Race", Robot.barrelRoll);
+    autonChooser.addOption("Bounce Path", Robot.bounce);
+    autonChooser.addOption("Test Path", Robot.testAuto);
     SmartDashboard.putData("Auto Chooser", autonChooser);
   }
 
@@ -177,14 +143,14 @@ public class RobotContainer {
   public ArrayList<Object> getCommands() {
 
     ArrayList<Object> t = new ArrayList<Object>();
-    t.add(driveNormal);
-    t.add(driveMaxSpeed);
-    t.add(driveSlowSpeed);
-    t.add(runIntake);
-    t.add(runIntakeBackwards);
-    t.add(stopIntake);
-    t.add(toggleVision);
-    t.add(aimAndShoot);
+    //t.add(driveNormal);
+    t.add(Robot.driveMaxSpeed);
+    t.add(Robot.driveSlowSpeed);
+    t.add(Robot.runIntake);
+    t.add(Robot.runIntakeBackwards);
+    t.add(Robot.stopIntake);
+    t.add(Robot.toggleVision);
+    //t.add(aimAndShoot);
 
     return t;
 
@@ -205,24 +171,24 @@ public class RobotContainer {
     // Drive
 
     //drive slow
-    lJoystick1.whenPressed(() -> driveTrain.setDriveWithMultiplier(0.25));
+    lJoystick1.whenPressed(() -> Robot.driveTrain.setDriveWithMultiplier(0.25));
     
     //drive normal
-    rJoystick1.whenPressed(() -> driveTrain.setDriveWithMultiplier(.5));
+    rJoystick1.whenPressed(() -> Robot.driveTrain.setDriveWithMultiplier(.5));
 
     //drive fast/max speed
-    rJoystick2.whenPressed(() -> driveTrain.setDriveWithMultiplier(1));
+    rJoystick2.whenPressed(() -> Robot.driveTrain.setDriveWithMultiplier(1));
 
     //drive inverted
-    lJoystick2.whenPressed(driveInverted); 
+    lJoystick2.whenPressed(Robot.driveInvertedd); 
 
     // Shooter
     
     //Aiming and shooting autonomous routine
-    xboxA.whenPressed(aimAndShoot);
+    //xboxA.whenPressed(aimAndShoot);
 
     //Start the shooter
-    BGTL.toggleWhenPressed(runShooter);
+    BGTL.toggleWhenPressed(Robot.runShooter);
 
     //Hood
     // BGTR.whileHeld(runPivotUp);
@@ -231,7 +197,7 @@ public class RobotContainer {
     // Coveyor
 
     //Run conveyor
-    xboxB.toggleWhenPressed(runConveyorSensor);
+    xboxB.toggleWhenPressed(Robot.runConveyorSensor);
 
     //conveyor backwards
     BGMR.whenPressed(() -> conveyor.start(-.75));
