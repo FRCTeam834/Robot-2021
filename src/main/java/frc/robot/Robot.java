@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
 /*
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -23,11 +24,13 @@ import org.opencv.core.Point;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Ultrasonic;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj.Spark;
 import frc.robot.commands.*;
 import frc.robot.commands.Conveyor.RunConveyor;
@@ -46,6 +49,7 @@ import frc.robot.commands.drive.DriveBackwardsDistance;
 import frc.robot.commands.drive.DriveForwardDistance;
 import frc.robot.commands.drive.DriveInverted;
 import frc.robot.commands.drive.DriveMaxSpeed;
+import frc.robot.commands.drive.DriveNormal;
 import frc.robot.commands.drive.DriveSlowSpeed;
 import frc.robot.commands.hood.RunPivotDown;
 import frc.robot.commands.hood.RunPivotUp;
@@ -57,6 +61,7 @@ import frc.robot.commands.shooter.StopShooter;
 import frc.robot.commands.snapto.SnapTo0;
 import frc.robot.commands.snapto.SnapTo180;
 import frc.robot.commands.vision.ToggleVision;
+import frc.robot.subsystems.EVSNetworkTables;
 /*
 import frc.robot.commands.drive.DriveMaxSpeed;
 import frc.robot.commands.drive.DriveNormal;
@@ -68,7 +73,13 @@ import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.vision.ToggleVision;
 */
 import frc.robot.createdclasses.Goal;
+import frc.robot.subsystems.BallIntake;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.GimbalLock;
+import frc.robot.subsystems.NavX;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.UltrasonicSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -80,41 +91,20 @@ import frc.robot.subsystems.DriveTrain;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
-  public final static DriveSlowSpeed driveSlowSpeed = new DriveSlowSpeed();
-  public  final static DriveMaxSpeed driveMaxSpeed = new DriveMaxSpeed();
-  public final static DriveInverted driveInvertedd = new DriveInverted();
-
-  public final static RunIntake runIntake = new RunIntake();
-  public final static RunIntakeBackwards runIntakeBackwards = new RunIntakeBackwards();
-  public final static StopIntake stopIntake = new StopIntake();
-
-  public final static RunShooter runShooter = new RunShooter();
-  public final StopShooter stopShooter = new StopShooter();
-
-  public final RunPivotUp runPivotUp = new RunPivotUp();
-  public final RunPivotDown runPivotDown = new RunPivotDown();
-
-  public final RunConveyor runConveyor = new RunConveyor();
-  public final static RunConveyorSensor runConveyorSensor = new RunConveyorSensor();
-  public final RunConveyorBackward runConveyorBackward = new RunConveyorBackward();
-  public final StopConveyor stopConveyor = new StopConveyor();
-
-  public final static ToggleVision toggleVision = new ToggleVision();
-  //private final AimAndShoot aimAndShoot = new AimAndShoot();
-  public final ShooterToSpeed shooterToSpeed = new ShooterToSpeed();
-  public final DriveBackwardsDistance driveBackwardsDistance = new DriveBackwardsDistance(12);
-  public final EmptyShooterNoVision emptyShooterNoVision = new EmptyShooterNoVision();
-  //private final ResetYaw resetYaw = new ResetYaw();
-  public final SnapTo0 snapTo0 = new SnapTo0();
-  public final SnapTo180 snapTo180 = new SnapTo180();
-  public final DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
-  public final static TestAuto testAuto = new TestAuto(Robot.driveTrain);
-  public final static SlalomIBarelyKnowEm slalom = new SlalomIBarelyKnowEm(Robot.driveTrain);
-  public final static Beeline pathB = new Beeline();
-  public final static PlanA pathA = new PlanA();
-  public final static DoABarrelRoll barrelRoll = new DoABarrelRoll(Robot.driveTrain);
-  public final static InelasticCollision bounce = new InelasticCollision(Robot.driveTrain);
   public static DriveTrain driveTrain;
+  public static DriveNormal driveNormal;
+  public static BallIntake ballIntake;
+  public static Subsystem[] runIntake;
+  public static UltrasonicSensor ultrasonic;
+  //public static ControlPanelManip controlPanelManip;
+  public static Shooter shooter;
+  //public static String gameData;
+  public static Conveyor conveyor;
+  public static frc.robot.subsystems.EVSNetworkTables EVSNetworkTables;
+  public UsbCamera camera;
+  public static GimbalLock gimbalLock;
+  public static NavX navX;
+  //public static Climber climber;
   // public static int ballCount;
   public static boolean driveInverted;
   public static boolean yawBackwards;
@@ -144,12 +134,22 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
+    navX = new NavX();
+    driveTrain = new DriveTrain();
+    driveNormal = new DriveNormal();
+    shooter = new Shooter();
+    gimbalLock = new GimbalLock();
+    //climber = new Climber();
+    ultrasonic = new UltrasonicSensor();
+    ballIntake = new BallIntake();
+    //controlPanelManip = new ControlPanelManip();
+    conveyor = new Conveyor();
+    EVSNetworkTables = new EVSNetworkTables();
     driveInverted = false;
     yawBackwards = false;
     m_robotContainer = new RobotContainer();
     driveTrain.resetOdometry(new Pose2d());
-    RobotContainer.navX.resetYaw();
+    navX.resetYaw();
     led = new Spark(9); //Replace with real PWM channel
 
   }
@@ -280,7 +280,7 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    RobotContainer.navX.resetYaw();
+    navX.resetYaw();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -295,13 +295,13 @@ public class Robot extends TimedRobot {
 
     led.set(lights);
 
-    SmartDashboard.putString("Rot2D", RobotContainer.navX.getRotation2d().toString());
+    SmartDashboard.putString("Rot2D", navX.getRotation2d().toString());
     SmartDashboard.putNumber("Right Encoder", driveTrain.getRightEncoderValue());
     try {
 
-      if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).size() != 0) {
+      if (EVSNetworkTables.getGoalArray().get(0).size() != 0) {
 
-        goal = new Goal(RobotContainer.EVSNetworkTables.getGoalArray().get(0));
+        goal = new Goal(EVSNetworkTables.getGoalArray().get(0));
 
       } else {
 
@@ -313,7 +313,7 @@ public class Robot extends TimedRobot {
 
     }
     try {
-      SmartDashboard.putNumber("goal height", goal.getHeight());
+      //SmartDashboard.putNumber("goal height", goal.getHeight());
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -22,7 +22,7 @@ public class LookAtPowerCell extends CommandBase {
 
   public LookAtPowerCell() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.EVSNetworkTables);
+    addRequirements(Robot.EVSNetworkTables);
     addRequirements(Robot.driveTrain);
   }
 
@@ -34,9 +34,9 @@ public class LookAtPowerCell extends CommandBase {
 
     try {
 
-      if (RobotContainer.EVSNetworkTables.getPowerCellArray().get(0).size() != 0) {
+      if (Robot.EVSNetworkTables.getPowerCellArray().get(0).size() != 0) {
 
-        power = new PowerCell(RobotContainer.EVSNetworkTables.getPowerCellArray().get(0));
+        power = new PowerCell(Robot.EVSNetworkTables.getPowerCellArray().get(0));
 
       } else {
 
@@ -55,7 +55,7 @@ public class LookAtPowerCell extends CommandBase {
   @Override
   public void execute() {
 
-    power.update(RobotContainer.EVSNetworkTables.getPowerCellArray().get(0));
+    power.update(Robot.EVSNetworkTables.getPowerCellArray().get(0));
 
     double deviation = power.getCenterX() - 320;
 

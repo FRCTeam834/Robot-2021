@@ -22,7 +22,7 @@ public class LookAtGoalX extends CommandBase {
 
   public LookAtGoalX() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.EVSNetworkTables);
+    addRequirements(Robot.EVSNetworkTables);
     addRequirements(Robot.driveTrain);
   }
 
@@ -34,9 +34,9 @@ public class LookAtGoalX extends CommandBase {
 
     try {
 
-      if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).size() != 0) {
+      if (Robot.EVSNetworkTables.getGoalArray().get(0).size() != 0) {
 
-        goal = new Goal(RobotContainer.EVSNetworkTables.getGoalArray().get(0));
+        goal = new Goal(Robot.EVSNetworkTables.getGoalArray().get(0));
 
       } else {
 
@@ -55,7 +55,7 @@ public class LookAtGoalX extends CommandBase {
   @Override
   public void execute() {
 
-    goal.update(RobotContainer.EVSNetworkTables.getGoalArray().get(0));
+    goal.update(Robot.EVSNetworkTables.getGoalArray().get(0));
 
     double deviation = goal.getCenterX() - 320;
 

@@ -15,14 +15,14 @@ public class EVSUpdater extends CommandBase {
 
   public EVSUpdater() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.EVSNetworkTables);
+    addRequirements(Robot.EVSNetworkTables);
     addRequirements(Robot.driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.EVSNetworkTables.getVisionTable();
+    Robot.EVSNetworkTables.getVisionTable();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,12 +31,12 @@ public class EVSUpdater extends CommandBase {
 
     //We just wanna run the vision, you know
     try {
-      if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).get(1) > 360) {
+      if (Robot.EVSNetworkTables.getGoalArray().get(0).get(1) > 360) {
 
         Robot.driveTrain.setDrive(-.08, .08);
         System.out.println("turn left");
 
-      } else if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).get(1) < 290) {
+      } else if (Robot.EVSNetworkTables.getGoalArray().get(0).get(1) < 290) {
 
         System.out.println("turn right");
         Robot.driveTrain.setDrive(.08, -.08);
@@ -72,8 +72,8 @@ public class EVSUpdater extends CommandBase {
     }*/
 
     System.out.println("");
-    System.out.println(RobotContainer.EVSNetworkTables.getPowerCellArray());
-    System.out.println(RobotContainer.EVSNetworkTables.getGoalArray());
+    System.out.println(Robot.EVSNetworkTables.getPowerCellArray());
+    System.out.println(Robot.EVSNetworkTables.getGoalArray());
     System.out.println("");
 
   }

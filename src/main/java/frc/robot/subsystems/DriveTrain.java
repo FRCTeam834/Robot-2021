@@ -49,7 +49,7 @@ public class DriveTrain extends SubsystemBase {
 
   Joystick leftJoystick = new Joystick(0);
   Joystick rightJoystick = new Joystick(1);
-  DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(RobotContainer.navX.getRotation2d());
+  DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(Robot.navX.getRotation2d());
 
   public DriveTrain() {
 
@@ -82,15 +82,15 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
     // System.out.println("Turnt: " + Rotation2d.fromDegrees(RobotContainer.navX.getYaw()));
     // System.out.println("Pose: " + dDriveOdometry.getPoseMeters());
-    dDriveOdometry.update(RobotContainer.navX.getRotation2d(), leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
+    dDriveOdometry.update(Robot.navX.getRotation2d(), leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
     SmartDashboard.putString("Pose: ", dDriveOdometry.getPoseMeters().toString());
-    SmartDashboard.putString("Angle: ", RobotContainer.navX.getRotation2d().toString());
+    SmartDashboard.putString("Angle: ", Robot.navX.getRotation2d().toString());
 
   }
 
   public void resetOdometry(Pose2d pose2d) {
     resetEncoderPosition();
-    dDriveOdometry.resetPosition(pose2d, RobotContainer.navX.getRotation2d());
+    dDriveOdometry.resetPosition(pose2d, Robot.navX.getRotation2d());
   }
 
   public void leftDrive(double speed) {

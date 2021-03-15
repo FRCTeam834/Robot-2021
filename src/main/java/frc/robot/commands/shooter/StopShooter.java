@@ -8,7 +8,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class StopShooter extends CommandBase {
@@ -17,13 +17,13 @@ public class StopShooter extends CommandBase {
    */
   public StopShooter() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooter);
+    addRequirements(Robot.shooter);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.shooter.stop();
+    Robot.shooter.stop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +34,7 @@ public class StopShooter extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.stop();
+    Robot.shooter.stop();
   }
 
   // Returns true when the command should end.

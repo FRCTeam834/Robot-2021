@@ -8,6 +8,7 @@
 package frc.robot.commands.hood;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class HoodHome extends CommandBase {
@@ -17,30 +18,30 @@ public class HoodHome extends CommandBase {
   boolean finished;
   public HoodHome() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.gimbalLock);
+    addRequirements(Robot.gimbalLock);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.gimbalLock.tiltUp(.5);
+    Robot.gimbalLock.tiltUp(.5);
     finished = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.gimbalLock.getLimitSwitch()) {
+    if (Robot.gimbalLock.getLimitSwitch()) {
       finished = true;
-      RobotContainer.gimbalLock.stop();
-      RobotContainer.gimbalLock.resetEncoder();
+      Robot.gimbalLock.stop();
+      Robot.gimbalLock.resetEncoder();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.gimbalLock.stop();
+    Robot.gimbalLock.stop();
   }
 
   // Returns true when the command should end.

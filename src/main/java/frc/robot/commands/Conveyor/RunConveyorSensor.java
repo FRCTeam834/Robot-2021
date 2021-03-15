@@ -8,7 +8,7 @@
 package frc.robot.commands.Conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class RunConveyorSensor extends CommandBase {
@@ -24,7 +24,7 @@ public class RunConveyorSensor extends CommandBase {
 
   public RunConveyorSensor() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.conveyor, RobotContainer.ballIntake);
+    addRequirements(Robot.conveyor, Robot.ballIntake);
   }
 
   // Called when the command is initially scheduled.
@@ -34,23 +34,23 @@ public class RunConveyorSensor extends CommandBase {
     falseCounter = 0;
     trueCounter = 0;
 
-    prevBottomSensorStatus = RobotContainer.conveyor.getBottomSensor();
-    prevTopSensorStatus = RobotContainer.conveyor.getTopSensor();
-    RobotContainer.ballIntake.start(.5);
+    prevBottomSensorStatus = Robot.conveyor.getBottomSensor();
+    prevTopSensorStatus = Robot.conveyor.getTopSensor();
+    Robot.ballIntake.start(.5);
 
-    RobotContainer.conveyor.stop();
+    Robot.conveyor.stop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isBall = RobotContainer.conveyor.getBottomSensor();
+    isBall = Robot.conveyor.getBottomSensor();
 
     //check if ball blocking sensor, if it's been long enough, start the motor
     // if not, add to counter
     if (isBall == false) {
-      RobotContainer.conveyor.start(.75);
-      RobotContainer.ballIntake.stop();
+      Robot.conveyor.start(.75);
+      Robot.ballIntake.stop();
       falseCounter = 0;
       trueCounter = 0;
     } else if (isBall == false) {
@@ -59,8 +59,8 @@ public class RunConveyorSensor extends CommandBase {
     //check if sensor is clear, if it's been long enough, stop the motor
     // if not, add to counter
     else if (isBall == true && trueCounter == 3) {
-      RobotContainer.conveyor.stop();
-      RobotContainer.ballIntake.start(.5);
+      Robot.conveyor.stop();
+      Robot.ballIntake.start(.5);
       trueCounter = 0;
       falseCounter = 0;
     } else if (isBall == true) {
@@ -89,8 +89,8 @@ public class RunConveyorSensor extends CommandBase {
     trueCounter = 0;
     falseCounter = 0;
     isBall = false;
-    RobotContainer.ballIntake.stop();
-    RobotContainer.conveyor.stop();
+    Robot.ballIntake.stop();
+    Robot.conveyor.stop();
   }
 
   // Returns true when the command should end.

@@ -2,7 +2,7 @@ package frc.robot.commands.Conveyor;
 
 //see documentation in RunConveyor.java
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class RunConveyorBackward extends CommandBase {
@@ -10,13 +10,13 @@ public class RunConveyorBackward extends CommandBase {
     private boolean isFinished = false;
 
     public RunConveyorBackward() {
-        addRequirements(RobotContainer.conveyor);
+        addRequirements(Robot.conveyor);
 
     }
 
     @Override
     public void initialize() {
-        RobotContainer.conveyor.start(-.75);
+        Robot.conveyor.start(-.75);
         //prevBottomSensorStatus = RobotContainer.Conveyor.getBottomSensor();
         isFinished = false;
 
@@ -41,7 +41,7 @@ public class RunConveyorBackward extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        RobotContainer.conveyor.stop();
+        Robot.conveyor.stop();
     }
 
     @Override

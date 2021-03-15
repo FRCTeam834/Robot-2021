@@ -21,7 +21,7 @@ public class SnapTo180 extends CommandBase {
   double lMotor, rMotor;
   public SnapTo180() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.driveTrain, RobotContainer.navX);    
+    addRequirements(Robot.driveTrain, Robot.navX);    
   }
 
   // Called when the command is initially scheduled.
@@ -50,9 +50,9 @@ public class SnapTo180 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(RobotContainer.navX.getYaw()) >= 165) { // spin slower once close for percision 
+    if(Math.abs(Robot.navX.getYaw()) >= 165) { // spin slower once close for percision 
       Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
-      if(Math.abs(RobotContainer.navX.getYaw()) >= 175) {
+      if(Math.abs(Robot.navX.getYaw()) >= 175) {
         //now the that we are facing 180, we can gg ez stop spinning
         finished = true;
       }

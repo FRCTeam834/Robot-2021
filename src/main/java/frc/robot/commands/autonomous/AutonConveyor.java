@@ -19,7 +19,7 @@ public class AutonConveyor extends CommandBase {
   boolean isFinished;
   public AutonConveyor() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.conveyor);
+    addRequirements(Robot.conveyor);
   }
 
   // Called when the command is initially scheduled.
@@ -34,7 +34,7 @@ public class AutonConveyor extends CommandBase {
   public void initialize(double t, double s) {
     time = t;
     speed = s;
-    RobotContainer.conveyor.start(speed);
+    Robot.conveyor.start(speed);
     timeStart = System.currentTimeMillis();
     isFinished = false;
     
@@ -58,7 +58,7 @@ public class AutonConveyor extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     isFinished = false;
-    RobotContainer.conveyor.stop();
+    Robot.conveyor.stop();
   }
 
   // Returns true when the command should end.

@@ -19,7 +19,7 @@ public class SnapToGoal extends CommandBase {
   boolean finished;
   public SnapToGoal(double angle) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.driveTrain, RobotContainer.navX);   
+    addRequirements(Robot.driveTrain, Robot.navX);   
     this.angle = angle;
   }
 
@@ -36,9 +36,9 @@ public class SnapToGoal extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(RobotContainer.navX.getYaw()) >= (angle-15)) { // spin slower once close for percision 
+    if(Math.abs(Robot.navX.getYaw()) >= (angle-15)) { // spin slower once close for percision 
       Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
-      if(Math.abs(RobotContainer.navX.getYaw()) >= (angle-5)) {
+      if(Math.abs(Robot.navX.getYaw()) >= (angle-5)) {
         //now the that we are facing angle, we can gg ez stop spinning
         finished = true;
       }

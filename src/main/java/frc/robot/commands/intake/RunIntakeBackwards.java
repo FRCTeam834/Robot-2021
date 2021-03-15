@@ -8,7 +8,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class RunIntakeBackwards extends CommandBase {
@@ -17,14 +17,14 @@ public class RunIntakeBackwards extends CommandBase {
    */
   public RunIntakeBackwards() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.ballIntake);
+    addRequirements(Robot.ballIntake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-    RobotContainer.ballIntake.start(-.5);
+    Robot.ballIntake.start(-.5);
 
   }
 
@@ -37,7 +37,7 @@ public class RunIntakeBackwards extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.ballIntake.stop();
+    Robot.ballIntake.stop();
   }
 
   // Returns true when the command should end.

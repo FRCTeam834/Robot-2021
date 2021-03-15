@@ -8,7 +8,7 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class StopIntake extends CommandBase {
@@ -17,13 +17,13 @@ public class StopIntake extends CommandBase {
    */
   public StopIntake() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.ballIntake);
+    addRequirements(Robot.ballIntake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.ballIntake.stop();
+    Robot.ballIntake.stop();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +34,7 @@ public class StopIntake extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.ballIntake.stop();
+    Robot.ballIntake.stop();
   }
 
   // Returns true when the command should end.

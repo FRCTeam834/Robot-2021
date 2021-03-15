@@ -8,6 +8,7 @@
 package frc.robot.commands.hood;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 
@@ -17,13 +18,13 @@ public class RunPivotUp extends CommandBase {
    */
   boolean finished;
   public RunPivotUp() {
-    addRequirements(RobotContainer.gimbalLock);
+    addRequirements(Robot.gimbalLock);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    RobotContainer.gimbalLock.tiltUp(ShooterConstants.SHOOTER_PIVOT_SPEED);
+    Robot.gimbalLock.tiltUp(ShooterConstants.SHOOTER_PIVOT_SPEED);
     finished = false;
 
   }
@@ -31,17 +32,17 @@ public class RunPivotUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (RobotContainer.gimbalLock.getLimitSwitch()) {
+    if (Robot.gimbalLock.getLimitSwitch()) {
       finished = true;
-      RobotContainer.gimbalLock.stop();
-      RobotContainer.gimbalLock.resetEncoder();
+      Robot.gimbalLock.stop();
+      Robot.gimbalLock.resetEncoder();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.gimbalLock.stop();
+    Robot.gimbalLock.stop();
   }
 
   // Returns true when the command should end.

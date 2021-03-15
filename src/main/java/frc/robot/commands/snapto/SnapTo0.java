@@ -47,9 +47,9 @@ public class SnapTo0 extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Math.abs(RobotContainer.navX.getYaw()) <= 15) { // spin slower once close for percision
+    if(Math.abs(Robot.navX.getYaw()) <= 15) { // spin slower once close for percision
       Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
-      if(Math.abs(RobotContainer.navX.getYaw()) <= 5) {
+      if(Math.abs(Robot.navX.getYaw()) <= 5) {
         //now the that we are facing 0, we can gg ez stop spinning
         finished = true;
       }

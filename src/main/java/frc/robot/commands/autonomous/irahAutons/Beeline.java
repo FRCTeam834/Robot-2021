@@ -42,7 +42,7 @@ public class Beeline extends SequentialCommandGroup {
     double distance4 = 0;
 
     // Red Path
-    if(RobotContainer.ultrasonicSensor.withinRange(Units.inchesToMeters(90), Units.inchesToMeters(10))) {
+    if(Robot.ultrasonic.withinRange(Units.inchesToMeters(90), Units.inchesToMeters(10))) {
       // Turn 45 degrees to the left; Move 84.85 in Forwards
         angle1 = 45; distance1 = Units.inchesToMeters(84.85);
 
@@ -59,7 +59,7 @@ public class Beeline extends SequentialCommandGroup {
         Robot.lights = LEDConstants.LAVA_RAINBOW;
     }
     // Blue Path
-    else if(RobotContainer.ultrasonicSensor.withinRange(Units.inchesToMeters(120), Units.inchesToMeters(10))) {
+    else if(Robot.ultrasonic.withinRange(Units.inchesToMeters(120), Units.inchesToMeters(10))) {
       // Move Forwards 120 in
         angle1 = 0; distance1 = Units.inchesToMeters(120);
 
@@ -77,7 +77,7 @@ public class Beeline extends SequentialCommandGroup {
 
     }
     else{
-        Robot.lights = LEDConstants.STROBE_RED;
+        //Robot.lights = LEDConstants.STROBE_RED;
     }
 
     addCommands(new SnapToGoal(angle1), new DriveAndIntake(distance1), new SnapToGoal(angle2), new DriveAndIntake(distance2), new SnapToGoal(angle3), new DriveAndIntake(distance3), new SnapToGoal(angle4), new DriveAndIntake(distance4));

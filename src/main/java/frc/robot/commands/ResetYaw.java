@@ -19,7 +19,7 @@ public class ResetYaw extends CommandBase {
   double lMotor, rMotor; //multiply by speed to set direction of motor
   public ResetYaw() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.navX);
+    addRequirements(Robot.navX);
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +30,7 @@ public class ResetYaw extends CommandBase {
     finished = false;
     lMotor = 1; 
     rMotor =1;
-    if(Math.abs(Math.abs(RobotContainer.navX.getYaw())-180) < Math.abs(RobotContainer.navX.getYaw())) {
+    if(Math.abs(Math.abs(Robot.navX.getYaw())-180) < Math.abs(Robot.navX.getYaw())) {
       Robot.yawBackwards = true; 
     }
 
@@ -45,11 +45,11 @@ public class ResetYaw extends CommandBase {
       rMotor = 1;
     } */
     //turn robot to face 180. doesn't need to be turned to 0 if it is not inverted because duh
-    if (Robot.yawBackwards && RobotContainer.navX.getYaw() < 0) { //if robot to right of 180, turn left
+    if (Robot.yawBackwards && Robot.navX.getYaw() < 0) { //if robot to right of 180, turn left
       Robot.driveTrain.setDrive(0.5, -0.5);
       lMotor = -1;
       rMotor = 1;
-    } else if (Robot.yawBackwards && RobotContainer.navX.getYaw() > 0) { //if robot to left of 180, turn right
+    } else if (Robot.yawBackwards && Robot.navX.getYaw() > 0) { //if robot to left of 180, turn right
       Robot.driveTrain.setDrive(-0.5, 0.5);
       lMotor = 1;
       rMotor = -1;
@@ -63,11 +63,11 @@ public class ResetYaw extends CommandBase {
   public void execute() {
     //turning to 180 (if inverted)
     if (Robot.yawBackwards) {
-      if(Math.abs(RobotContainer.navX.getYaw()) >= 165) {
+      if(Math.abs(Robot.navX.getYaw()) >= 165) {
        Robot.driveTrain.setDrive(lMotor*.25, rMotor*.25);
-       if(Math.abs(RobotContainer.navX.getYaw()) >= 175) {
+       if(Math.abs(Robot.navX.getYaw()) >= 175) {
          //now the that we are facing 180, we can reset yaw so it is no longer backwards!
-         RobotContainer.navX.resetYaw(); 
+         Robot.navX.resetYaw(); 
          Robot.yawBackwards = false;
          finished = true;
        }

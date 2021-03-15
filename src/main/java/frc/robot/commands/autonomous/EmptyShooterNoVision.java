@@ -10,6 +10,7 @@ package frc.robot.commands.autonomous;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ConveyorConstants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class EmptyShooterNoVision extends CommandBase {
@@ -20,7 +21,7 @@ public class EmptyShooterNoVision extends CommandBase {
   boolean finished;
   public EmptyShooterNoVision() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooter, RobotContainer.conveyor);
+    addRequirements(Robot.shooter, Robot.conveyor);
 
   }
 
@@ -30,8 +31,8 @@ public class EmptyShooterNoVision extends CommandBase {
     time = 2;
     timeStart = System.currentTimeMillis();
     finished = false;
-    RobotContainer.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
-    RobotContainer.conveyor.start(ConveyorConstants.AUTON_CONVEYOR_SPEED);
+    Robot.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
+    Robot.conveyor.start(ConveyorConstants.AUTON_CONVEYOR_SPEED);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,8 +46,8 @@ public class EmptyShooterNoVision extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    RobotContainer.shooter.stop();
-    RobotContainer.conveyor.stop();
+    Robot.shooter.stop();
+    Robot.conveyor.stop();
   }
 
   // Returns true when the command should end.

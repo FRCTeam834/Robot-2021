@@ -9,6 +9,7 @@ package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.createdclasses.Goal;
 import frc.robot.subsystems.GimbalLock;
@@ -18,7 +19,7 @@ public class LookAtGoalY extends CommandBase {
    * Creates a new LookAtGoalY.
    */
 
-  private GimbalLock g = RobotContainer.gimbalLock;
+  private GimbalLock g = Robot.gimbalLock;
   private double angleRequirement = 0;
   private boolean isFinished = false;
   private Goal goal;
@@ -26,8 +27,8 @@ public class LookAtGoalY extends CommandBase {
 
   public LookAtGoalY() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.gimbalLock);
-    addRequirements(RobotContainer.EVSNetworkTables);
+    addRequirements(Robot.gimbalLock);
+    addRequirements(Robot.EVSNetworkTables);
   }
 
   // Called when the command is initially scheduled.
@@ -39,9 +40,9 @@ public class LookAtGoalY extends CommandBase {
 
     try {
 
-      if (RobotContainer.EVSNetworkTables.getGoalArray().get(0).size() != 0) {
+      if (Robot.EVSNetworkTables.getGoalArray().get(0).size() != 0) {
 
-        goal = new Goal(RobotContainer.EVSNetworkTables.getGoalArray().get(0));
+        goal = new Goal(Robot.EVSNetworkTables.getGoalArray().get(0));
 
       } else {
 

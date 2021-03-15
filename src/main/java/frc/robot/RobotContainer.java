@@ -21,9 +21,9 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-
-import frc.robot.commands.DriveNormal;
+import frc.robot.commands.drive.*;
 import frc.robot.commands.autonomous.irahAutons.*;
+import frc.robot.commands.autonomous.AimAndShoot;
 //import frc.robot.commands.autonomous.AimAndShoot;
 import frc.robot.commands.autonomous.EmptyShooterNoVision;
 import frc.robot.commands.autonomous.ShooterToSpeed;
@@ -58,26 +58,52 @@ public class RobotContainer {
   // ExampleCommand(m_exampleSubsystem);
   //Subsystems
   
-  public static BallIntake ballIntake;
-  public static UltrasonicSensor ultrasonicSensor = new UltrasonicSensor();
-  //public static ControlPanelManip controlPanelManip;
-  public static Shooter shooter;
-  public static String gameData;
-  public static Conveyor conveyor = new Conveyor();
-  public static EVSNetworkTables EVSNetworkTables;
-  public UsbCamera camera;
-  public static GimbalLock gimbalLock;
-  public static NavX navX;
+  private final DriveNormal driveNormal = new DriveNormal();
+  private final DriveSlowSpeed driveSlowSpeed = new DriveSlowSpeed();
+  private final DriveMaxSpeed driveMaxSpeed = new DriveMaxSpeed();
+  private final DriveInverted driveInverted = new DriveInverted();
 
-  //Commands
-  //private final DriveNormal driveNormal = new DriveNormal();
+  private final RunIntake runIntake = new RunIntake();
+  private final RunIntakeBackwards runIntakeBackwards = new RunIntakeBackwards();
+  private final StopIntake stopIntake = new StopIntake();
+
+  private final RunShooter runShooter = new RunShooter();
+  private final StopShooter stopShooter = new StopShooter();
+
+  private final RunPivotUp runPivotUp = new RunPivotUp();
+  private final RunPivotDown runPivotDown = new RunPivotDown();
+
+  private final RunConveyor runConveyor = new RunConveyor();
+  private final RunConveyorSensor runConveyorSensor = new RunConveyorSensor();
+  private final RunConveyorBackward runConveyorBackward = new RunConveyorBackward();
+  private final StopConveyor stopConveyor = new StopConveyor();
+
+  private final ToggleVision toggleVision = new ToggleVision();
+  private final AimAndShoot aimAndShoot = new AimAndShoot();
+  private final ShooterToSpeed shooterToSpeed = new ShooterToSpeed();
   
+  //private final SpinCP spinCP = new SpinCP();
+  //private final SetCPColor setCPColor = new SetCPColor();
+  
+  private final DriveBackwardsDistance driveBackwardsDistance = new DriveBackwardsDistance(12); 
+  private final EmptyShooterNoVision emptyShooterNoVision = new EmptyShooterNoVision();
+  //private final ResetYaw resetYaw = new ResetYaw();
+  private final SnapTo0 snapTo0 = new SnapTo0();
+  private final SnapTo180 snapTo180 = new SnapTo180();
+  private final DriveForwardDistance driveForwardDistance = new DriveForwardDistance(.25, 69);
+
+  public final static TestAuto testAuto = new TestAuto(Robot.driveTrain);
+  public final static SlalomIBarelyKnowEm slalom = new SlalomIBarelyKnowEm(Robot.driveTrain);
+  public final static Beeline pathB = new Beeline();
+  public final static PlanA pathA = new PlanA();
+  public final static DoABarrelRoll barrelRoll = new DoABarrelRoll(Robot.driveTrain);
+  public final static InelasticCollision bounce = new InelasticCollision(Robot.driveTrain);
   private final Joystick leftJoystick = new Joystick(0);
   private final Joystick rightJoystick = new Joystick(1);
   private final XboxController xbox = new XboxController(2);
   private final Joystick launchpad = new Joystick(3);
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
-  // Joystick Buttons
+  //Joystick Buttons
   private final JoystickButton
   // Left Joystick
   lJoystick1 = new JoystickButton(leftJoystick, 1), lJoystick2 = new JoystickButton(leftJoystick, 2),
@@ -96,33 +122,19 @@ public class RobotContainer {
       rJoystick11 = new JoystickButton(rightJoystick, 11),
 
       // Arcade Buttons
-      /*
-      Button Naming Convention:
-      BG = Button Group
-      TL = Top Left
-      TM = Top Middle
-      TR = Top Right
-      ML = Middle Left
-      MM = Middle Middle
-      MR = Middle RIght
-      BL = Bottom Left
-      BM = Bottom Middle
-      BR = Bottom Right
-      */
       BGTL = new JoystickButton(launchpad, 7), BGTM = new JoystickButton(launchpad, 2),
       BGTR = new JoystickButton(launchpad, 4), BGML = new JoystickButton(launchpad, 1),
-      BGMM = new JoystickButton(launchpad, 6),
-      BGMR = new JoystickButton(launchpad, 3),
+      BGMM = new JoystickButton(launchpad, 6), BGMR = new JoystickButton(launchpad, 3),
       BGBL = new JoystickButton(launchpad, 10), BGBM = new JoystickButton(launchpad, 9),
       BGBR = new JoystickButton(launchpad, 8);
 
-  // Xbox Buttons
-  private final JoystickButton xboxStart = new JoystickButton(xbox, Button.kStart.value), xboxBack = new JoystickButton(xbox, Button.kBack.value),
-      xboxB = new JoystickButton(xbox, Button.kB.value), xboxA = new JoystickButton(xbox, Button.kA.value), xboxY = new JoystickButton(xbox, Button.kY.value),
-      xboxX = new JoystickButton(xbox, Button.kX.value), xboxLB = new JoystickButton(xbox, Button.kBumperLeft.value), xboxRB = new JoystickButton(xbox, Button.kBumperRight.value),
+  //Xbox Buttons
+  private final JoystickButton xboxStart = new JoystickButton(xbox, 8), xboxBack = new JoystickButton(xbox, 7),
+      xboxB = new JoystickButton(xbox, 2), xboxA = new JoystickButton(xbox, 1), xboxY = new JoystickButton(xbox, 4),
+      xboxX = new JoystickButton(xbox, 3), xboxLB = new JoystickButton(xbox, 5), xboxRB = new JoystickButton(xbox, 6),
       xboxLJB = new JoystickButton(xbox, 9);
 
-
+  // Triggers
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -130,12 +142,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    autonChooser.addOption("Slalom", Robot.slalom);
-    autonChooser.addOption("Path B", Robot.pathB);
-    autonChooser.addOption("Path A", Robot.pathA);
-    autonChooser.addOption("Barrel Race", Robot.barrelRoll);
-    autonChooser.addOption("Bounce Path", Robot.bounce);
-    autonChooser.addOption("Test Path", Robot.testAuto);
+    autonChooser.addOption("Slalom", slalom);
+    autonChooser.addOption("Path B", pathB);
+    autonChooser.addOption("Path A", pathA);
+    autonChooser.addOption("Barrel Race", barrelRoll);
+    autonChooser.addOption("Bounce Path", bounce);
+    autonChooser.addOption("Test Path", testAuto);
     SmartDashboard.putData("Auto Chooser", autonChooser);
   }
 
@@ -144,12 +156,12 @@ public class RobotContainer {
 
     ArrayList<Object> t = new ArrayList<Object>();
     //t.add(driveNormal);
-    t.add(Robot.driveMaxSpeed);
-    t.add(Robot.driveSlowSpeed);
-    t.add(Robot.runIntake);
-    t.add(Robot.runIntakeBackwards);
-    t.add(Robot.stopIntake);
-    t.add(Robot.toggleVision);
+    t.add(driveMaxSpeed);
+    t.add(driveSlowSpeed);
+    t.add(runIntake);
+    t.add(runIntakeBackwards);
+    t.add(stopIntake);
+    t.add(toggleVision);
     //t.add(aimAndShoot);
 
     return t;
@@ -180,7 +192,7 @@ public class RobotContainer {
     rJoystick2.whenPressed(() -> Robot.driveTrain.setDriveWithMultiplier(1));
 
     //drive inverted
-    lJoystick2.whenPressed(Robot.driveInvertedd); 
+    //lJoystick2.whenPressed(Robot.driveInverted); 
 
     // Shooter
     
@@ -188,7 +200,7 @@ public class RobotContainer {
     //xboxA.whenPressed(aimAndShoot);
 
     //Start the shooter
-    BGTL.toggleWhenPressed(Robot.runShooter);
+    BGTL.toggleWhenPressed(runShooter);
 
     //Hood
     // BGTR.whileHeld(runPivotUp);
@@ -197,21 +209,21 @@ public class RobotContainer {
     // Coveyor
 
     //Run conveyor
-    xboxB.toggleWhenPressed(Robot.runConveyorSensor);
+    xboxB.toggleWhenPressed(runConveyorSensor);
 
     //conveyor backwards
-    BGMR.whenPressed(() -> conveyor.start(-.75));
+    BGMR.whenPressed(() -> Robot.conveyor.start(-.75));
 
     //stop conveyor
-    BGMM.whenPressed(new InstantCommand(conveyor::stop, conveyor));
+    BGMM.whenPressed(new InstantCommand(Robot.conveyor::stop, Robot.conveyor));
 
     //Intake
     
      //start intake
-     xboxRB.whileHeld(() -> ballIntake.start(1.0));
+     xboxRB.whileHeld(() -> Robot.ballIntake.start(1.0));
 
     //reverse intake
-    xboxLB.whenHeld(new InstantCommand(ballIntake::startBackwards, ballIntake));
+    xboxLB.whenHeld(new InstantCommand(Robot.ballIntake::startBackwards, Robot.ballIntake));
 
   }
 

@@ -42,7 +42,7 @@ public class PlanA extends SequentialCommandGroup {
     double distance4 = 0;
 
     // Red Path
-    if(RobotContainer.ultrasonicSensor.withinRange(Units.inchesToMeters(60), Units.inchesToMeters(10))) {
+    if(Robot.ultrasonic.withinRange(Units.inchesToMeters(60), Units.inchesToMeters(10))) {
       // Move 60 in Forwards
         angle1 = 0; distance1 = Units.inchesToMeters(60);
 
@@ -59,7 +59,7 @@ public class PlanA extends SequentialCommandGroup {
         Robot.lights = LEDConstants.LAVA_RAINBOW;
     }
     // Blue Path
-    else if(RobotContainer.ultrasonicSensor.withinRange(Units.inchesToMeters(240), Units.inchesToMeters(10))) {
+    else if(Robot.ultrasonic.withinRange(Units.inchesToMeters(240), Units.inchesToMeters(10))) {
       // Turn  degrees to the right; Move Forwards 161.555 in
         angle1 = -21.801; distance1 = Units.inchesToMeters(161.555);
 
@@ -77,7 +77,7 @@ public class PlanA extends SequentialCommandGroup {
 
     }
     else{
-        Robot.lights = LEDConstants.STROBE_RED;
+        //Robot.lights = LEDConstants.STROBE_RED;
     }
 
     addCommands(new SnapToGoal(angle1), new DriveAndIntake(distance1), new SnapToGoal(angle2), new DriveAndIntake(distance2), new SnapToGoal(angle3), new DriveAndIntake(distance3), new SnapToGoal(angle4), new DriveAndIntake(distance4));

@@ -9,7 +9,7 @@ package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ConveyorConstants;
-
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.ShooterConstants;
 
@@ -27,14 +27,14 @@ public class EmptyShooter extends CommandBase {
 
   public EmptyShooter() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(RobotContainer.shooter, RobotContainer.conveyor);
+    addRequirements(Robot.shooter, Robot.conveyor);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    prevBottomSensorStatus = RobotContainer.conveyor.getBottomSensor();
-    prevTopSensorStatus = RobotContainer.conveyor.getTopSensor();
+    prevBottomSensorStatus = Robot.conveyor.getBottomSensor();
+    prevTopSensorStatus = Robot.conveyor.getTopSensor();
 
     isFinished = false;
 
@@ -43,8 +43,8 @@ public class EmptyShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    RobotContainer.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
-    RobotContainer.conveyor.start(ConveyorConstants.AUTON_CONVEYOR_SPEED);
+    Robot.shooter.getMotor().setVoltage(ShooterConstants.S_WHEEL_VOLTAGE);
+    Robot.conveyor.start(ConveyorConstants.AUTON_CONVEYOR_SPEED);
     /*if (RobotContainer.ballCount == 0) {
       isFinished = true; //may need to remove exclamation point
     }
