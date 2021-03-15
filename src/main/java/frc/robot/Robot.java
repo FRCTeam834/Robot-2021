@@ -175,7 +175,10 @@ public class Robot extends TimedRobot {
     gameData = DriverStation.getInstance().getGameSpecificMessage();
     CommandScheduler.getInstance().run();
   }
-
+  public void simulationPeriodic()
+  {
+    DriverStation.getInstance().silenceJoystickConnectionWarning(true);
+  }
   /**
    * This function is called once each time the robot enters Disabled mode.
    */
