@@ -10,7 +10,6 @@ package frc.robot.commands.vision;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.VisionAutonConstants;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.createdclasses.PowerCell;
 
 public class LookAtPowerCell extends CommandBase {

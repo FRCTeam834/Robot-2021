@@ -9,7 +9,6 @@ package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 
 public class AutonConveyor extends CommandBase {
   /**

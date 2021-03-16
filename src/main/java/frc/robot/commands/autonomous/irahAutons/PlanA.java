@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 // Import the robot
 import frc.robot.Robot;
-// Import robot container
-import frc.robot.RobotContainer;
 //import frc.robot.commands.MoveToPosition; (Figure out replacement)
 // Parameters class
 import frc.robot.Constants.LEDConstants;

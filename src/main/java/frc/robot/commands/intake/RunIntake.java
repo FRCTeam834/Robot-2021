@@ -9,7 +9,6 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 
 public class RunIntake extends CommandBase {
   /**

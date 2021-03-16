@@ -35,14 +35,7 @@ import frc.robot.commands.shooter.*;
 import frc.robot.commands.hood.*;
 import frc.robot.commands.snapto.*;
 import frc.robot.commands.vision.ToggleVision;
-import frc.robot.subsystems.BallIntake;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.GimbalLock;
-import frc.robot.subsystems.NavX;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.EVSNetworkTables;
-import frc.robot.subsystems.UltrasonicSensor;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since

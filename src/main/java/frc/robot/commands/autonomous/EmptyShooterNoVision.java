@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ConveyorConstants;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 
 public class EmptyShooterNoVision extends CommandBase {
   /**

@@ -9,7 +9,6 @@ package frc.robot.commands.Conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 
 //lol all this entire class does is just stop the conveyor belt as a defautl command
 public class StopConveyor extends CommandBase {

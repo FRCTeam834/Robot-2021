@@ -24,7 +24,6 @@ import org.opencv.core.Point;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Ultrasonic;
 //import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,35 +31,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj.Spark;
-import frc.robot.commands.*;
-import frc.robot.commands.Conveyor.RunConveyor;
-import frc.robot.commands.Conveyor.RunConveyorBackward;
-import frc.robot.commands.Conveyor.RunConveyorSensor;
-import frc.robot.commands.Conveyor.StopConveyor;
-import frc.robot.commands.autonomous.EmptyShooterNoVision;
-import frc.robot.commands.autonomous.ShooterToSpeed;
-import frc.robot.commands.autonomous.autons.TestAuto;
-import frc.robot.commands.autonomous.irahAutons.Beeline;
-import frc.robot.commands.autonomous.irahAutons.DoABarrelRoll;
-import frc.robot.commands.autonomous.irahAutons.InelasticCollision;
-import frc.robot.commands.autonomous.irahAutons.PlanA;
-import frc.robot.commands.autonomous.irahAutons.SlalomIBarelyKnowEm;
-import frc.robot.commands.drive.DriveBackwardsDistance;
-import frc.robot.commands.drive.DriveForwardDistance;
-import frc.robot.commands.drive.DriveInverted;
-import frc.robot.commands.drive.DriveMaxSpeed;
+
 import frc.robot.commands.drive.DriveNormal;
-import frc.robot.commands.drive.DriveSlowSpeed;
-import frc.robot.commands.hood.RunPivotDown;
-import frc.robot.commands.hood.RunPivotUp;
-import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.intake.RunIntakeBackwards;
-import frc.robot.commands.intake.StopIntake;
-import frc.robot.commands.shooter.RunShooter;
-import frc.robot.commands.shooter.StopShooter;
-import frc.robot.commands.snapto.SnapTo0;
-import frc.robot.commands.snapto.SnapTo180;
-import frc.robot.commands.vision.ToggleVision;
+
 import frc.robot.subsystems.EVSNetworkTables;
 /*
 import frc.robot.commands.drive.DriveMaxSpeed;
@@ -298,8 +271,10 @@ public class Robot extends TimedRobot {
 
     led.set(lights);
 
-    SmartDashboard.putString("Rot2D", navX.getRotation2d().toString());
+    SmartDashboard.putNumber("Rot2DAng", navX.getRotation2d().getDegrees());
     SmartDashboard.putNumber("Right Encoder", driveTrain.getRightEncoderValue());
+    SmartDashboard.putNumber("Left Encoder", driveTrain.getLeftEncoderValue());
+    SmartDashboard.putNumber("Shooter RPM", shooter.getEncoder().getVelocity());
     try {
 
       if (EVSNetworkTables.getGoalArray().get(0).size() != 0) {
