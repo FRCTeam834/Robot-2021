@@ -45,7 +45,7 @@ public class LookAtGoalY extends CommandBase {
 
       } else {
 
-        System.out.println("No Goal Found");
+        //System.out.println("No Goal Found");
         isFinished = true;
 
       }

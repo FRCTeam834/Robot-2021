@@ -30,8 +30,8 @@ public class RunConveyorSensor extends CommandBase {
   @Override
   public void initialize() {
     isBall = false;
-    falseCounter = 0;
-    trueCounter = 0;
+    //falseCounter = 0;
+    //trueCounter = 0;
 
     prevBottomSensorStatus = Robot.conveyor.getBottomSensor();
     prevTopSensorStatus = Robot.conveyor.getTopSensor();
@@ -50,10 +50,10 @@ public class RunConveyorSensor extends CommandBase {
     if (isBall == false) {
       Robot.conveyor.start(.75);
       Robot.ballIntake.stop();
-      falseCounter = 0;
-      trueCounter = 0;
-    } else if (isBall == false) {
-      falseCounter++;
+      //falseCounter = 0;
+      //trueCounter = 0;
+      //falseCounter++;
+    //} else if (isBall == false) {
     }
     //check if sensor is clear, if it's been long enough, stop the motor
     // if not, add to counter

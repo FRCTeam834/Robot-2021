@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.Robot;
@@ -67,12 +68,20 @@ public class DriveTrain extends SubsystemBase {
     rightDrive1.getEncoder().setPosition(0);
     rightDrive2.getEncoder().setPosition(0);
     rightDrive3.getEncoder().setPosition(0);
-    leftDrive1.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
-    leftDrive2.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
-    leftDrive3.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
-    rightDrive1.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
-    rightDrive2.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
-    rightDrive3.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_CONVERSION_FACTOR);
+
+    leftDrive1.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_POSITION_FACTOR);
+    leftDrive2.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_POSITION_FACTOR);
+    leftDrive3.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_POSITION_FACTOR);
+    rightDrive1.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_POSITION_FACTOR);
+    rightDrive2.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_POSITION_FACTOR);
+    rightDrive3.getEncoder().setPositionConversionFactor(DrivetrainConstants.DRIVE_POSITION_FACTOR);
+
+    leftDrive1.getEncoder().setVelocityConversionFactor(DrivetrainConstants.DRIVE_VELOCITY_FACTOR);
+    leftDrive2.getEncoder().setVelocityConversionFactor(DrivetrainConstants.DRIVE_VELOCITY_FACTOR);
+    leftDrive3.getEncoder().setVelocityConversionFactor(DrivetrainConstants.DRIVE_VELOCITY_FACTOR);
+    rightDrive1.getEncoder().setVelocityConversionFactor(DrivetrainConstants.DRIVE_VELOCITY_FACTOR);
+    rightDrive2.getEncoder().setVelocityConversionFactor(DrivetrainConstants.DRIVE_VELOCITY_FACTOR);
+    rightDrive3.getEncoder().setVelocityConversionFactor(DrivetrainConstants.DRIVE_VELOCITY_FACTOR);
 
   }
 
@@ -82,8 +91,8 @@ public class DriveTrain extends SubsystemBase {
     // System.out.println("Turnt: " + Rotation2d.fromDegrees(RobotContainer.navX.getYaw()));
     // System.out.println("Pose: " + dDriveOdometry.getPoseMeters());
     dDriveOdometry.update(Robot.navX.getRotation2d(), leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
-    SmartDashboard.putString("Pose: ", dDriveOdometry.getPoseMeters().toString());
-    SmartDashboard.putString("Angle: ", Robot.navX.getRotation2d().toString());
+    SmartDashboard.putString("Odometry: ", dDriveOdometry.getPoseMeters().toString());
+    SmartDashboard.putNumber("Angle: ", Robot.navX.getRotation2d().getDegrees());
 
   }
 

@@ -124,7 +124,6 @@ public class Robot extends TimedRobot {
     driveTrain.resetOdometry(new Pose2d());
     navX.resetYaw();
     led = new Spark(9); //Replace with real PWM channel
-
   }
 
   /**
@@ -257,6 +256,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     navX.resetYaw();
+    Robot.driveTrain.resetOdometry(new Pose2d());
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -283,7 +283,7 @@ public class Robot extends TimedRobot {
 
       } else {
 
-        System.out.println("No Goal Found");
+        //System.out.println("No Goal Found");
 
       }
 

@@ -71,7 +71,10 @@ public final class Constants {
         public static final int RIGHT_DRIVE_MOTOR_3 = 6; // CAN ID#
         public static final boolean LEFT_DRIVE_INVERTED = true; // Going the wrong way?
         public static final boolean RIGHT_DRIVE_INVERTED = false; // Going the wrong way?
-        public static final double DRIVE_CONVERSION_FACTOR = 0;
+        public static final double GEARING = 5.33;
+        public static final double WHEEL_CIRCUMFERENCE = Math.PI * Units.inchesToMeters(6);
+        public static final double DRIVE_VELOCITY_FACTOR = (1/GEARING) * WHEEL_CIRCUMFERENCE * (1/60);
+        public static final double DRIVE_POSITION_FACTOR = (1/GEARING) * WHEEL_CIRCUMFERENCE;
         public static final double DRIVE_ENCODER_MULTIPLIER = 0.00086340382; // multiply this by distance to get required
                                                                               // encoder change
     }

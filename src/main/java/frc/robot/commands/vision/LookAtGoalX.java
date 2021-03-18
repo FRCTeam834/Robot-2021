@@ -39,7 +39,7 @@ public class LookAtGoalX extends CommandBase {
 
       } else {
 
-        System.out.println("No Goal Found");
+        //System.out.println("No Goal Found");
         isFinished = true;
 
       }

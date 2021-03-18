@@ -134,6 +134,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
+    Robot.driveTrain.setDefaultCommand(driveSlowSpeed);
     configureButtonBindings();
     autonChooser.addOption("Slalom", slalom);
     autonChooser.addOption("Path B", pathB);
@@ -204,6 +205,7 @@ public class RobotContainer {
     //Run conveyor
     xboxB.toggleWhenPressed(runConveyorSensor);
 
+    BGML.whenPressed(() -> Robot.conveyor.start(.75));
     //conveyor backwards
     BGMR.whenPressed(() -> Robot.conveyor.start(-.75));
 
@@ -213,7 +215,8 @@ public class RobotContainer {
     //Intake
     
      //start intake
-     xboxRB.whileHeld(() -> Robot.ballIntake.start(1.0));
+     //xboxRB.whileHeld(() -> Robot.ballIntake.start(1.0));
+     xboxRB.toggleWhenPressed(runIntake);
 
     //reverse intake
     xboxLB.whenHeld(new InstantCommand(Robot.ballIntake::startBackwards, Robot.ballIntake));
