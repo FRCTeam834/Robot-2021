@@ -134,7 +134,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the button bindings
-    Robot.driveTrain.setDefaultCommand(driveSlowSpeed);
+    //Robot.driveTrain.setDefaultCommand(driveSlowSpeed);
     configureButtonBindings();
     autonChooser.addOption("Slalom", slalom);
     autonChooser.addOption("Path B", pathB);
@@ -177,13 +177,13 @@ public class RobotContainer {
     // Drive
 
     //drive slow
-    lJoystick1.whenPressed(() -> Robot.driveTrain.setDriveWithMultiplier(0.25));
+    lJoystick1.toggleWhenPressed(driveSlowSpeed);
     
     //drive normal
-    rJoystick1.whenPressed(() -> Robot.driveTrain.setDriveWithMultiplier(.5));
+    rJoystick1.toggleWhenPressed(driveNormal);
 
     //drive fast/max speed
-    rJoystick2.whenPressed(() -> Robot.driveTrain.setDriveWithMultiplier(1));
+    rJoystick2.toggleWhenPressed(driveMaxSpeed);
 
     //drive inverted
     //lJoystick2.whenPressed(Robot.driveInverted); 
@@ -205,13 +205,15 @@ public class RobotContainer {
     //Run conveyor
     xboxB.toggleWhenPressed(runConveyorSensor);
 
-    BGML.whenPressed(() -> Robot.conveyor.start(.75));
+    BGML.whileHeld(runConveyor);
+    
+    xboxA.whileHeld(runPivotDown);
+    xboxY.whileHeld(runPivotUp);
     //conveyor backwards
     BGMR.whenPressed(() -> Robot.conveyor.start(-.75));
 
     //stop conveyor
     BGMM.whenPressed(new InstantCommand(Robot.conveyor::stop, Robot.conveyor));
-
     //Intake
     
      //start intake

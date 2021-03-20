@@ -9,17 +9,19 @@ package frc.robot.commands.Conveyor;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.Timer;
 
 public class RunConveyorSensor extends CommandBase {
   /**
    * Creates a new RunConveyorSensor.
    */
-  boolean isBall;
+  boolean sensorClear;
   int trueCounter, falseCounter;
 
   //ok so this variable will say if the sensor was previously covered or uncovered so we can tell when a new ball is passing in front of it.
   boolean prevBottomSensorStatus;
   boolean prevTopSensorStatus; //same deal as bottom sensor
+  Timer timer = new Timer();
 
   public RunConveyorSensor() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,13 +31,14 @@ public class RunConveyorSensor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    isBall = false;
+    sensorClear = false;
     //falseCounter = 0;
     //trueCounter = 0;
 
     prevBottomSensorStatus = Robot.conveyor.getBottomSensor();
     prevTopSensorStatus = Robot.conveyor.getTopSensor();
     Robot.ballIntake.start(.5);
+    
 
     Robot.conveyor.stop();
   }
@@ -43,28 +46,26 @@ public class RunConveyorSensor extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isBall = Robot.conveyor.getBottomSensor();
+    sensorClear = Robot.conveyor.getBottomSensor();
 
     //check if ball blocking sensor, if it's been long enough, start the motor
-    // if not, add to counter
-    if (isBall == false) {
-      Robot.conveyor.start(.75);
+    if (sensorClear == false) {
       Robot.ballIntake.stop();
-      //falseCounter = 0;
+      timer.start();
+      Robot.conveyor.start(.75);
+    }
+
+    if (timer.hasElapsed(0.35)) {
+      Robot.ballIntake.start(.5);
+      Robot.conveyor.stop();
+      timer.stop();
+      timer.reset();
+    }
       //trueCounter = 0;
       //falseCounter++;
     //} else if (isBall == false) {
-    }
+    //}
     //check if sensor is clear, if it's been long enough, stop the motor
-    // if not, add to counter
-    else if (isBall == true && trueCounter == 3) {
-      Robot.conveyor.stop();
-      Robot.ballIntake.start(.5);
-      trueCounter = 0;
-      falseCounter = 0;
-    } else if (isBall == true) {
-      trueCounter++;
-    }
 /*
     if (RobotContainer.Conveyor.getBottomSensor() == true && prevBottomSensorStatus == false) {
       prevBottomSensorStatus = true;
@@ -87,7 +88,7 @@ public class RunConveyorSensor extends CommandBase {
   public void end(boolean interrupted) {
     trueCounter = 0;
     falseCounter = 0;
-    isBall = false;
+    sensorClear = false;
     Robot.ballIntake.stop();
     Robot.conveyor.stop();
   }

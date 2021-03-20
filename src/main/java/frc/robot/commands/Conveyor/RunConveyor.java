@@ -26,7 +26,7 @@ public class RunConveyor extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.conveyor.start(.75);
+    Robot.conveyor.start(.6);
     //prevBottomSensorStatus = RobotContainer.Conveyor.getBottomSensor();
     //prevTopSensorStatus = RobotContainer.Conveyor.getTopSensor();
 

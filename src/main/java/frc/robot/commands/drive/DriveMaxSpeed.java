@@ -8,7 +8,9 @@
 package frc.robot.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 
 
 public class DriveMaxSpeed extends CommandBase {
@@ -24,6 +26,7 @@ public class DriveMaxSpeed extends CommandBase {
   @Override
   public void initialize() {
     Robot.driveTrain.setDrive(0, 0);
+    //Robot.lights = Constants.LEDConstants.STROBE_RED;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,6 +40,7 @@ public class DriveMaxSpeed extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Robot.driveTrain.stop();
   }
 
   // Returns true when the command should end.

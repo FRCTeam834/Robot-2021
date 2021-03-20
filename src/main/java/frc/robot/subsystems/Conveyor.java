@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Timer;
 
 import frc.robot.Constants.ConveyorConstants;
 
@@ -43,6 +44,7 @@ public class Conveyor extends SubsystemBase {
 
   public void start(double speed) {
     conveyorMotor.set(speed);
+    
   }
 
   public void stop() {

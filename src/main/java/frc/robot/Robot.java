@@ -84,7 +84,7 @@ public class Robot extends TimedRobot {
 
   //Lights!
   public static double lights = -.45;
-  Spark led;
+  public static Spark led;
 
   /*
   private int cycleCount = 0;
@@ -124,6 +124,7 @@ public class Robot extends TimedRobot {
     driveTrain.resetOdometry(new Pose2d());
     navX.resetYaw();
     led = new Spark(9); //Replace with real PWM channel
+    
   }
 
   /**

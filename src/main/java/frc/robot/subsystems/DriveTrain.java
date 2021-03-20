@@ -55,7 +55,9 @@ public class DriveTrain extends SubsystemBase {
 
     leftDriveGroup.setInverted(DrivetrainConstants.LEFT_DRIVE_INVERTED);
     rightDriveGroup.setInverted(DrivetrainConstants.RIGHT_DRIVE_INVERTED);
+    dDrive.setSafetyEnabled(false);
     resetOdometry(new Pose2d());
+    
     
 
   }
@@ -93,7 +95,7 @@ public class DriveTrain extends SubsystemBase {
     dDriveOdometry.update(Robot.navX.getRotation2d(), leftDrive1.getEncoder().getPosition(), rightDrive1.getEncoder().getPosition());
     SmartDashboard.putString("Odometry: ", dDriveOdometry.getPoseMeters().toString());
     SmartDashboard.putNumber("Angle: ", Robot.navX.getRotation2d().getDegrees());
-
+    
   }
 
   public void resetOdometry(Pose2d pose2d) {
