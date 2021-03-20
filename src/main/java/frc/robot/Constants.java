@@ -35,12 +35,11 @@ public final class Constants {
 
     public static final class ShooterConstants {
         public static final int SHOOTER_MOTOR_PORT = 10; // CAN ID# //SHOOTER MOTOR
-        public static final int SHOOTER_PIVOT_MOTOR_PORT = 9; // CAN ID# //NEEDS TO BE ADDED STILL
+        public static final int SHOOTER_PIVOT_MOTOR_PORT = 9; // CAN ID#
         public static final boolean SHOOTER_INVERTED = true; // Going the wrong way?
         public static final boolean SHOOTER_PIVOT_INVERTED = true; // Going the wrong way?
-        public static final double SHOOTER_PIVOT_SPEED = 0.1;
+        public static final double SHOOTER_ANGLE_INCREMENT = 0.1;
 
-        public static final double S_BACKSPIN_RATIO = 4 / 7;
         public static final double S_WHEEL_SPEED = 3600 / 60; // rps
         public static final double S_WHEEL_VOLTAGE = 11.6; // Measure pls
         public static final double S_PROPORTIONAL_CONSTANT = 6;
@@ -50,11 +49,8 @@ public final class Constants {
         public static final double AUTON_SHOOTER_SPEED = .7;
         public static final double ROBOT_HEIGHT = 31.75 / 12;
         public static final double WHEEL_CIRCUMFERENCE = 5 * Math.PI / 12;
-        public static final double SHOOTER_MOUTH_WIDTH = 6.25 / 12; // Currently a placeholder best be in feet
-        public static final int GIMBAL_LOCK_PORT1 = 6; // Encoder DIO Port# Get from SRX?
-        public static final int GIMBAL_LOCK_PORT2 = 9; // Encoder DIO Port# Get from SRX?
-        public static final double GIMBAL_MULTIPLIER = 5; // Measure
-        public static final int HOOD_GEAR_RATIO = 18 / 66;
+        public static final double SHOOTER_MOUTH_WIDTH = 6.25 / 12; // Currently a placeholder; best be in feet
+        public static final double HOOD_GEAR_RATIO = 18 / 66;
         public static final int HOOD_LIMIT_SWITCH_PORT = 9;
         public static final double ANGLE_TOLERANCE = 2 * Math.PI / 120;
     }

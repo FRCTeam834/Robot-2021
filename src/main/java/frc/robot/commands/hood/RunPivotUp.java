@@ -15,34 +15,34 @@ public class RunPivotUp extends CommandBase {
   /**
    * Creates a new RunClimberUp.
    */
-  boolean finished;
+  boolean finished = false;
+
   public RunPivotUp() {
     addRequirements(Robot.gimbalLock);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    Robot.gimbalLock.tiltUp(ShooterConstants.SHOOTER_PIVOT_SPEED);
-    finished = false;
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    // Check to make sure that the limit switch hasn't been triggered
     if (Robot.gimbalLock.getLimitSwitch()) {
-      finished = true;
       Robot.gimbalLock.stop();
       Robot.gimbalLock.resetEncoder();
+      finished = true;
+    }
+    else {
+      Robot.gimbalLock.tiltUp(ShooterConstants.SHOOTER_ANGLE_INCREMENT);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    Robot.gimbalLock.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

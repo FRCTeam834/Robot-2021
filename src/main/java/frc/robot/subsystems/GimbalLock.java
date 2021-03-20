@@ -7,27 +7,39 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants.ShooterConstants;;
+import frc.robot.Constants.ShooterConstants;
 
 public class GimbalLock extends SubsystemBase {
   /**
    * Creates a new ShooterPivot.
    */
 
+  // Create new motor and limit switch objects
   WPI_TalonSRX pivot = new WPI_TalonSRX(ShooterConstants.SHOOTER_PIVOT_MOTOR_PORT);
   DigitalInput limitSwitch = new DigitalInput(ShooterConstants.HOOD_LIMIT_SWITCH_PORT);
 
+  // The desired angle of the pivot
+  double desiredAngle = 0;
+
+  // Main constructor
   public GimbalLock() {
+
+    // Setup the basic config of the motor
     pivot.setInverted(ShooterConstants.SHOOTER_PIVOT_INVERTED);
     pivot.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.CTRE_MagEncoder_Relative, 0, 10);
 
-
+    // PID loop settings
+    pivot.configClosedloopRamp(0.5);
+    pivot.config_kP(0, 0.125);
+    pivot.config_kI(0, 0);
+    pivot.config_kD(0, 0);
   }
 
   @Override
@@ -36,34 +48,58 @@ public class GimbalLock extends SubsystemBase {
     //setDefaultCommand(new StopPivot);
   }
 
-  public void tiltUp(double n) {
-
-    pivot.set(n);
-
+  // Set the motor at the desired speed
+  public void setSpeed(double speed) {
+    pivot.set(speed);
   }
 
-  public void tiltDown(double n) {
+  // Tilts the shooter up by the desired angle
+  public void tiltUp(double angleInterval) {
 
-    pivot.set(-n);
-
+    // Increment the desired angle, then move there
+    setDesiredAngle(desiredAngle + angleInterval);
   }
 
+  // Tilts the shooter down by the desired angle
+  public void tiltDown(double angleInterval) {
+
+    // Increment the desired angle, then move there
+    setDesiredAngle(desiredAngle - angleInterval);
+  }
+
+  // Moves the pivot to the desired angle
+  public void setDesiredAngle(double desiredAngle) {
+
+    // Save the new value
+    this.desiredAngle = desiredAngle;
+
+    // Set the motor to move to the new position
+    pivot.set(ControlMode.Position, ((desiredAngle / 360) * 4096) / ShooterConstants.HOOD_GEAR_RATIO);
+  }
+
+  // Halts the pivot
   public void stop() {
-
     pivot.set(0);
-
   }
 
-  public double getEncoder() {
+  // Returns the angle of the motor
+  public double getCurrentMotorAngle() {
 
-    return pivot.getSelectedSensorPosition() / 4096 * Math.PI * 2 * ShooterConstants.HOOD_GEAR_RATIO + 25 * 2 * Math.PI / 360;
-
+    // Returns the rotations of the sensor (from 0 - 1) * 360 deg per rotation
+    return ((pivot.getSelectedSensorPosition() / 4096) * 360);
   }
 
+  // Returns the angle of the hood
+  public double getCurrentHoodAngle() {
+    return getCurrentMotorAngle() * ShooterConstants.HOOD_GEAR_RATIO;
+  }
+
+  // Returns if the limit switch is pressed
   public boolean getLimitSwitch() {
     return limitSwitch.get();
   }
 
+  // Sets the encoder's reference back to zero
   public void resetEncoder() {
     pivot.setSelectedSensorPosition(0);
   }
