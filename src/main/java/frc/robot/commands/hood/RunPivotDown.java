@@ -16,7 +16,7 @@ public class RunPivotDown extends CommandBase {
    * Creates a new RunClimberUp.
    */
   public RunPivotDown() {
-    addRequirements(Robot.gimbalLock);
+    addRequirements(Robot.hood);
   }
 
   // Called when the command is initially scheduled.
@@ -26,7 +26,7 @@ public class RunPivotDown extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.gimbalLock.tiltDown(ShooterConstants.SHOOTER_ANGLE_INCREMENT);
+    Robot.hood.tiltDown(ShooterConstants.SHOOTER_ANGLE_INCREMENT);
   }
 
   // Called once the command ends or is interrupted.

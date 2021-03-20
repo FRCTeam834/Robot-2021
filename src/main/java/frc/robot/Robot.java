@@ -49,7 +49,7 @@ import frc.robot.createdclasses.Goal;
 import frc.robot.subsystems.BallIntake;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.GimbalLock;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.NavX;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.UltrasonicSensor;
@@ -75,7 +75,7 @@ public class Robot extends TimedRobot {
   public static Conveyor conveyor;
   public static frc.robot.subsystems.EVSNetworkTables EVSNetworkTables;
   public UsbCamera camera;
-  public static GimbalLock gimbalLock;
+  public static Hood hood;
   public static NavX navX;
   //public static Climber climber;
   // public static int ballCount;
@@ -111,7 +111,7 @@ public class Robot extends TimedRobot {
     driveTrain = new DriveTrain();
     driveNormal = new DriveNormal();
     shooter = new Shooter();
-    gimbalLock = new GimbalLock();
+    hood = new Hood();
     //climber = new Climber();
     ultrasonic = new UltrasonicSensor();
     ballIntake = new BallIntake();

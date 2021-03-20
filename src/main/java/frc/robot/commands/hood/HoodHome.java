@@ -18,13 +18,13 @@ public class HoodHome extends CommandBase {
 
   public HoodHome() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Robot.gimbalLock);
+    addRequirements(Robot.hood);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Robot.gimbalLock.setSpeed(.5);
+    Robot.hood.setSpeed(.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -32,11 +32,11 @@ public class HoodHome extends CommandBase {
   public void execute() {
 
     // Check to see if the hood has hit it's home position
-    if (Robot.gimbalLock.getLimitSwitch()) {
+    if (Robot.hood.getLimitSwitch()) {
 
       // Stop motor and set the home position
-      Robot.gimbalLock.stop();
-      Robot.gimbalLock.resetEncoder();
+      Robot.hood.stop();
+      Robot.hood.resetEncoder();
 
       // Finished should be set last in case of interrupt
       finished = true;
@@ -46,7 +46,7 @@ public class HoodHome extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Robot.gimbalLock.stop();
+    Robot.hood.stop();
   }
 
   // Returns true when the command should end.

@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ShooterConstants;
 
-public class GimbalLock extends SubsystemBase {
+public class Hood extends SubsystemBase {
   /**
    * Creates a new ShooterPivot.
    */
@@ -29,7 +29,7 @@ public class GimbalLock extends SubsystemBase {
   double desiredAngle = 0;
 
   // Main constructor
-  public GimbalLock() {
+  public Hood() {
 
     // Setup the basic config of the motor
     pivot.setInverted(ShooterConstants.SHOOTER_PIVOT_INVERTED);

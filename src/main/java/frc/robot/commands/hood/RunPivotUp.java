@@ -18,7 +18,7 @@ public class RunPivotUp extends CommandBase {
   boolean finished = false;
 
   public RunPivotUp() {
-    addRequirements(Robot.gimbalLock);
+    addRequirements(Robot.hood);
   }
 
   // Called when the command is initially scheduled.
@@ -30,13 +30,13 @@ public class RunPivotUp extends CommandBase {
   public void execute() {
 
     // Check to make sure that the limit switch hasn't been triggered
-    if (Robot.gimbalLock.getLimitSwitch()) {
-      Robot.gimbalLock.stop();
-      Robot.gimbalLock.resetEncoder();
+    if (Robot.hood.getLimitSwitch()) {
+      Robot.hood.stop();
+      Robot.hood.resetEncoder();
       finished = true;
     }
     else {
-      Robot.gimbalLock.tiltUp(ShooterConstants.SHOOTER_ANGLE_INCREMENT);
+      Robot.hood.tiltUp(ShooterConstants.SHOOTER_ANGLE_INCREMENT);
     }
   }
 
