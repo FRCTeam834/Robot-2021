@@ -25,35 +25,36 @@ import frc.robot.subsystems.DriveTrain;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class SlalomIBarelyKnowEm extends SequentialCommandGroup {
-  /** Creates a new Bounce. */
+  /** Creates a new Slalom run. */
   public SlalomIBarelyKnowEm(DriveTrain driveTrain) {
     // Create a voltage constraint to ensure we don't accelerate too fast
     var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(new SimpleMotorFeedforward(AutonConstants.ksVolts,
     AutonConstants.kvVoltSecondsPerMeter, AutonConstants.kaVoltSecondsSquaredPerMeter), AutonConstants.kDriveKinematics, 10);
 
     // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(AutonConstants.kMaxSpeedMetersPerSecond,
-    AutonConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(AutonConstants.kDriveKinematics)
-            // Apply the voltage constraint
-            .addConstraint(autoVoltageConstraint);
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(AutonConstants.kMaxSpeedMetersPerSecond, AutonConstants.kMaxAccelerationMetersPerSecondSquared)
+      // Add kinematics to ensure max speed is actually obeyed
+      .setKinematics(AutonConstants.kDriveKinematics)
+      // Apply the voltage constraint
+      .addConstraint(autoVoltageConstraint);
 
-            Trajectory SlalomTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(Units.feetToMeters(5.96), Units.feetToMeters(2.75),  Rotation2d.fromDegrees(44.578)),
-List.of(
-   new Translation2d(Units.feetToMeters(8.623), Units.feetToMeters(6.132)),
-   new Translation2d(Units.feetToMeters(15.984), Units.feetToMeters(6.767)),
-   new Translation2d(Units.feetToMeters(21.344), Units.feetToMeters(6.175)),
-   new Translation2d(Units.feetToMeters(25.156), Units.feetToMeters(3.473)),
-   new Translation2d(Units.feetToMeters(26.557), Units.feetToMeters(5.48)),
-   new Translation2d(Units.feetToMeters(23.852), Units.feetToMeters(5.995)),
-   new Translation2d(Units.feetToMeters(20.139), Units.feetToMeters(3.422)),
-   new Translation2d(Units.feetToMeters(11.508), Units.feetToMeters(3.139))
-),
-new Pose2d(Units.feetToMeters(4.205), Units.feetToMeters(7.487),  Rotation2d.fromDegrees(161.015)),
-config);
+    Trajectory SlalomTrajectory = TrajectoryGenerator.generateTrajectory(
+      // Start at the origin facing the +X direction
+      new Pose2d(Units.feetToMeters(5.96), Units.feetToMeters(2.75),  Rotation2d.fromDegrees(44.578)),
+      List.of(
+        new Translation2d(Units.feetToMeters(8.623), Units.feetToMeters(6.132)),
+        new Translation2d(Units.feetToMeters(15.984), Units.feetToMeters(6.767)),
+        new Translation2d(Units.feetToMeters(21.344), Units.feetToMeters(6.175)),
+        new Translation2d(Units.feetToMeters(25.156), Units.feetToMeters(3.473)),
+        new Translation2d(Units.feetToMeters(26.557), Units.feetToMeters(5.48)),
+        new Translation2d(Units.feetToMeters(23.852), Units.feetToMeters(5.995)),
+        new Translation2d(Units.feetToMeters(20.139), Units.feetToMeters(3.422)),
+        new Translation2d(Units.feetToMeters(11.508), Units.feetToMeters(3.139))
+      ),
+      new Pose2d(Units.feetToMeters(4.205), Units.feetToMeters(7.487),  Rotation2d.fromDegrees(161.015)),
+      trajectoryConfig);
+
+
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(

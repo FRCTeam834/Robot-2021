@@ -27,10 +27,10 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.util.Units;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.AutonConstants;
 import frc.robot.Robot;
+
 public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
@@ -52,14 +52,10 @@ public class DriveTrain extends SubsystemBase {
   DifferentialDriveOdometry dDriveOdometry = new DifferentialDriveOdometry(Robot.navX.getRotation2d());
 
   public DriveTrain() {
-
     leftDriveGroup.setInverted(DrivetrainConstants.LEFT_DRIVE_INVERTED);
     rightDriveGroup.setInverted(DrivetrainConstants.RIGHT_DRIVE_INVERTED);
     dDrive.setSafetyEnabled(false);
     resetOdometry(new Pose2d());
-    
-    
-
   }
 
   public void resetEncoderPosition() {
@@ -189,8 +185,8 @@ public class DriveTrain extends SubsystemBase {
 
     System.out.println(leftVolts);
     System.out.println(rightVolts);
-    leftDriveGroup.setVoltage(-leftVolts * .05);
-    rightDriveGroup.setVoltage(-rightVolts * .05);
+    leftDriveGroup.setVoltage(leftVolts);
+    rightDriveGroup.setVoltage(rightVolts);
     dDrive.feed();
 
   }
