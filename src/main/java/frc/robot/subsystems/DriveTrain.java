@@ -8,7 +8,6 @@
 
 package frc.robot.subsystems;
 
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
@@ -180,6 +179,10 @@ public class DriveTrain extends SubsystemBase {
     return rightJoystick;
 
   }
+  public void setCurvyDrive(double forward, double rotation)
+  {
+    dDrive.curvatureDrive(-constrainJoystick(forward), constrainJoystick(rotation), false);
+  }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
 
@@ -230,6 +233,19 @@ public class DriveTrain extends SubsystemBase {
       return reset.andThen(ramseteCommand.andThen(() -> Robot.driveTrain.tankDriveVolts(0, 0)));
     } else {
       return ramseteCommand.andThen(() -> this.tankDriveVolts(0, 0));
+
+    }
+  }
+
+  // Return a constrained Joystick value
+  private double constrainJoystick(double rawValue) {
+
+    // If the value is out of tolerance, then zero it. Otherwise return it
+    if (Math.abs(rawValue) < DrivetrainConstants.JOYSTICK_DEADZONE) {
+      return 0;
+    }
+    else {
+      return rawValue;
     }
   }
 }

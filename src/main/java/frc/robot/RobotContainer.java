@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -55,6 +56,7 @@ public class RobotContainer {
   private final DriveSlowSpeed driveSlowSpeed = new DriveSlowSpeed();
   private final DriveMaxSpeed driveMaxSpeed = new DriveMaxSpeed();
   private final DriveInverted driveInverted = new DriveInverted();
+  private final DriveCurvy driveCurvy = new DriveCurvy();
 
   private final RunIntake runIntake = new RunIntake();
   private final RunIntakeBackwards runIntakeBackwards = new RunIntakeBackwards();
@@ -74,7 +76,7 @@ public class RobotContainer {
   private final ToggleVision toggleVision = new ToggleVision();
   private final AimAndShoot aimAndShoot = new AimAndShoot();
   private final ShooterToSpeed shooterToSpeed = new ShooterToSpeed();
-  
+  private final HoodHome hoodHome = new HoodHome();
   //private final SpinCP spinCP = new SpinCP();
   //private final SetCPColor setCPColor = new SetCPColor();
   
@@ -91,10 +93,10 @@ public class RobotContainer {
   public final static PlanA pathA = new PlanA();
   public final static DoABarrelRoll barrelRoll = new DoABarrelRoll(Robot.driveTrain);
   public final static InelasticCollision bounce = new InelasticCollision(Robot.driveTrain);
-  private final Joystick leftJoystick = new Joystick(0);
-  private final Joystick rightJoystick = new Joystick(1);
-  private final XboxController xbox = new XboxController(2);
-  private final Joystick launchpad = new Joystick(3);
+  public static Joystick leftJoystick = new Joystick(0);
+  public static Joystick rightJoystick = new Joystick(1);
+  public static XboxController xbox = new XboxController(2);
+  public static Joystick launchpad = new Joystick(3);
   private final SendableChooser<Command> autonChooser = new SendableChooser<>();
   //Joystick Buttons
   private final JoystickButton
@@ -184,6 +186,11 @@ public class RobotContainer {
 
     //drive fast/max speed
     rJoystick2.toggleWhenPressed(driveMaxSpeed);
+    //rJoystick5.toggleWhenPressed(()-> new RunCommand(, Robot.driveTrain));
+
+    rJoystick5.toggleWhenPressed(driveCurvy);
+    // Snap to the goal angle
+    lJoystick2.whileHeld(snapTo0);
 
     //drive inverted
     //lJoystick2.whenPressed(Robot.driveInverted); 
@@ -209,6 +216,7 @@ public class RobotContainer {
     
     xboxA.whileHeld(runPivotDown);
     xboxY.whileHeld(runPivotUp);
+    xboxX.whenPressed(hoodHome);
     //conveyor backwards
     BGMR.whenPressed(() -> Robot.conveyor.start(-.75));
 
@@ -216,9 +224,9 @@ public class RobotContainer {
     BGMM.whenPressed(new InstantCommand(Robot.conveyor::stop, Robot.conveyor));
     //Intake
     
-     //start intake
-     //xboxRB.whileHeld(() -> Robot.ballIntake.start(1.0));
-     xboxRB.toggleWhenPressed(runIntake);
+    //start intake
+    //xboxRB.whileHeld(() -> Robot.ballIntake.start(1.0));
+    xboxRB.toggleWhenPressed(runIntake);
 
     //reverse intake
     xboxLB.whenHeld(new InstantCommand(Robot.ballIntake::startBackwards, Robot.ballIntake));

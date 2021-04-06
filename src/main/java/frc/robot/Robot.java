@@ -269,7 +269,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
     led.set(lights);
 
     SmartDashboard.putNumber("Rot2DAng", navX.getRotation2d().getDegrees());

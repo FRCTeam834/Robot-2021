@@ -71,6 +71,7 @@ public final class Constants {
         public static final double WHEEL_CIRCUMFERENCE = Math.PI * Units.inchesToMeters(6);
         public static final double DRIVE_VELOCITY_FACTOR = (1/GEARING) * WHEEL_CIRCUMFERENCE * (1/60);
         public static final double DRIVE_POSITION_FACTOR = (1/GEARING) * WHEEL_CIRCUMFERENCE;
+        public static final double JOYSTICK_DEADZONE = 0.10;
         public static final double DRIVE_ENCODER_MULTIPLIER = 0.00086340382; // multiply this by distance to get required
                                                                               // encoder change
     }
